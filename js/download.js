@@ -19,6 +19,7 @@ const jml = require('./jml.js')
 
 download.all=async function()
 {
+	await download.fred()
 	await download.oecd()
 	await download.imf()
 }
@@ -100,7 +101,8 @@ download.imf=async function()
 			console.log("Downloading Daily IMF data for "+year+"-"+month0)
 
 			let url="https://www.imf.org/external/np/fin/data/rms_mth.aspx?SelectDate="+year+"-"+month0+"-01&reportType=CVSDR&tsvflag=Y"
-			let lines = await csvparse( await fetch(url).then(res => res.text()) , { separator: '\t' } )
+			let data = await fetch(url).then(res => res.text())
+			let lines = await csvparse( data , { separator: '\t' } )
 
 			let dates=[]
 			for( line of lines )
@@ -229,3 +231,68 @@ let cids=[
 
 }
 
+
+download.fred=async function()
+{
+
+// map currency codes to download
+
+let cids=[
+
+	"USEU",
+	"KOUS",
+	"MXUS",
+	"USAL",
+	"BZUS",
+	"INUS",
+	"SZUS",
+	"JPUS",
+	"VZUS",
+	"THUS",
+	"SFUS",
+	"TAUS",
+	"MAUS",
+	"HKUS",
+	"SDUS",
+	"NOUS",
+	"SIUS",
+	"USNZ",
+	"DNUS",
+	"SLUS",
+	"CHUS",
+	"USUK",
+	"CAUS",
+
+]
+
+	let dump={}
+	for( let cid of cids )
+	{
+
+		console.log("Downloading Daily FRED data for "+cid)
+		
+		let url="https://fred.stlouisfed.org/graph/fredgraph.csv?id=DEX"+cid
+		let data = await fetch(url).then(res => res.text())
+		let lines = await csvparse( data )
+
+		for( line of lines )
+		{
+			let date  = line.DATE
+			let value = line["DEX"+cid]
+			if( !isNaN(value) )
+			{
+				if(!dump[date]){dump[date]={}} // init
+				dump[date][cid]=value
+			}
+		}
+
+	}
+
+	let filename=__dirname+"/../json/fred.json"
+	let old={}
+	try{ old=JSON.parse( fs.readFileSync(filename,{encoding:"utf8"}) ) }catch(e){}
+	for(let n in old){ if( (!dump[n]) ) { dump[n] = old[n] } } // include old data
+	fs.writeFileSync(filename,json_stringify(dump,{ space: ' ' })+"\n");
+
+
+}
