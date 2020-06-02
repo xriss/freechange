@@ -125,7 +125,7 @@ download.imf=async function()
 							let value=parseFloat(line[i])
 							if( !isNaN(value) )
 							{
-								if(!dump[date]){dump[date]={XDR:1}} // init
+								if(!dump[date]){dump[date]={}} // init
 								dump[date][cid]=value
 							}
 						}
@@ -138,7 +138,7 @@ download.imf=async function()
 	let filename=__dirname+"/../json/imf.json"
 	let old={}
 	try{ old=JSON.parse( fs.readFileSync(filename,{encoding:"utf8"}) ) }catch(e){}
-	for(let n in old){ if( (!dump[n]) || (!dump[n].XDR) ) { dump[n] = old[n] } } // include old data
+	for(let n in old){ if( (!dump[n]) ) { dump[n] = old[n] } } // include old data
 	fs.writeFileSync(filename,json_stringify(dump,{ space: ' ' })+"\n");
 	
 }
@@ -211,7 +211,7 @@ let cids=[
 
 					if( !isNaN(value) )
 					{
-						if(!dump[date]){dump[date]={USD:1}} // init
+						if(!dump[date]){dump[date]={}} // init
 						dump[date][cid]=value
 					}
 				}
@@ -224,7 +224,7 @@ let cids=[
 	let filename=__dirname+"/../json/oecd.json"
 	let old={}
 	try{ old=JSON.parse( fs.readFileSync(filename,{encoding:"utf8"}) ) }catch(e){}
-	for(let n in old){ if( (!dump[n]) || (!dump[n].USD) ) { dump[n] = old[n] } } // include old data
+	for(let n in old){ if( (!dump[n]) ) { dump[n] = old[n] } } // include old data
 	fs.writeFileSync(filename,json_stringify(dump,{ space: ' ' })+"\n");
 
 }
