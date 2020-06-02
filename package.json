@@ -1,6 +1,6 @@
 {
   "name": "freechange",
-  "description": "freechange",
+  "description": "Code and data to perform historical currency exchange.",
   "version": "0.0.1",
   "license": "MIT",
   "main": "dflat/js/cmd.js",
@@ -13,8 +13,6 @@
     "freechange": "dflat/js/cmd.js"
   },
   "directories": {},
-  "dependencies": {
-  },
-  "devDependencies": {
-  }
+  "dependencies": {},
+  "devDependencies": {}
 }
