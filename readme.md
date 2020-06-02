@@ -8,9 +8,11 @@ in order of preference we should try
 
 IMF : Daily
 
-we can cycle through each month and get rather messy daily numbers from here
+we can cycle through each month and get rather messy daily numbers from 
+here and note that currently 2003-04-01 is the first working date and 
+each request is rather slow to complete.
 
-https://www.imf.org/external/np/fin/data/rms_mth.aspx?SelectDate=2004-01-01&reportType=CVSDR&tsvflag=Y
+https://www.imf.org/external/np/fin/data/rms_mth.aspx?SelectDate=2003-04-01&reportType=CVSDR&tsvflag=Y
 
 
 
@@ -44,7 +46,11 @@ https://fred.stlouisfed.org/graph/fredgraph.csv?id=DEXUSEU
 OECD : Monthly
 
 
+need to ask for each currency separately
+
 AUS+AUT+BEL+CAN+CHL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ISR+ITA+JPN+KOR+LVA+LUX+MEX+NLD+NZL+NOR+POL+PRT+SVK+SVN+ESP+SWE+CHE+TUR+GBR+USA+EA19+SDR+NMEC+BRA+CHN+COL+CRI+IND+IDN+RUS+ZAF
+
+eg
 
 https://stats.oecd.org/restsdmx/sdmx.ashx/GetData/MEI_FIN/CCUS.AUS.M/all?startTime=1940-01
 https://stats.oecd.org/restsdmx/sdmx.ashx/GetData/MEI_FIN/CCUS.GBR.M/all?startTime=1940-01
