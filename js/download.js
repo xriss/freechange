@@ -14,8 +14,12 @@ const moment         = require('moment')
 const json_stringify = require('json-stable-stringify')
 
 
+const jml = require('./jml.js')
+
+
 download.all=async function()
 {
+	await download.oecd()
 	await download.imf()
 }
 
@@ -137,5 +141,91 @@ download.imf=async function()
 	for(let n in old){ if( (!dump[n]) || (!dump[n].XDR) ) { dump[n] = old[n] } } // include old data
 	fs.writeFileSync(filename,json_stringify(dump,{ space: ' ' })+"\n");
 	
+}
+
+
+
+download.oecd=async function()
+{
+
+// map currency codes to download
+
+let cids=[
+	"AUS",
+	"CAN",
+	"CHL",
+	"CZE",
+	"DNK",
+	"HUN",
+	"ISL",
+	"ISR",
+	"JPN",
+	"KOR",
+	"LVA",
+	"MEX",
+	"NZL",
+	"NOR",
+	"POL",
+	"SWE",
+	"CHE",
+	"TUR",
+	"GBR",
+	"EA19",
+	"SDR",
+	"BRA",
+	"CHN",
+	"COL",
+	"CRI",
+	"IND",
+	"IDN",
+	"RUS",
+	"ZAF",
+]
+
+
+	let dump={}
+	for( let cid of cids )
+	{
+
+		console.log("Downloading Monthly OECD data for "+cid)
+		
+		let url="https://stats.oecd.org/restsdmx/sdmx.ashx/GetData/MEI_FIN/CCUS."+cid+".M/all?startTime=1940-01"
+		let data = await fetch(url).then(res => res.text())
+		let tree
+		try{ tree=jml.from_xml(data) }catch(e){}
+
+		if(tree)
+		{
+
+			let date="0000-00"		
+			jml.walk_xpath(tree,function(it,path){
+
+				if(path=="/message:MessageGroup/DataSet/Series/Obs/Time")
+				{
+					date=it[1][0]
+				}
+				else
+				if(path=="/message:MessageGroup/DataSet/Series/Obs/ObsValue")
+				{
+					let value=parseFloat(it.value)
+
+					if( !isNaN(value) )
+					{
+						if(!dump[date]){dump[date]={USD:1}} // init
+						dump[date][cid]=value
+					}
+				}
+
+			})
+		}
+
+	}
+
+	let filename=__dirname+"/../json/oecd.json"
+	let old={}
+	try{ old=JSON.parse( fs.readFileSync(filename,{encoding:"utf8"}) ) }catch(e){}
+	for(let n in old){ if( (!dump[n]) || (!dump[n].USD) ) { dump[n] = old[n] } } // include old data
+	fs.writeFileSync(filename,json_stringify(dump,{ space: ' ' })+"\n");
+
 }
 
