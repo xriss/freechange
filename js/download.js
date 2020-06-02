@@ -131,7 +131,7 @@ download.imf=async function()
 		}
 	}
 	
-	let filename=__dirname+"/../json/imf_fromxdr_day.json"
+	let filename=__dirname+"/../json/imf_toxdr_day.json"
 	let old={}
 	try{ old=JSON.parse( fs.readFileSync(filename,{encoding:"utf8"}) ) }catch(e){}
 	for(let n in old){ if( (!dump[n]) || (!dump[n].XDR) ) { dump[n] = old[n] } } // include old data
