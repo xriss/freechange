@@ -84,11 +84,12 @@ for( let n in download.currency ) { download.currency[n].iso=n }
 
 download.all=async function()
 {
-	await download.fred()
-	await download.oecd()
-	await download.imf()
+//	await download.fred()
+//	await download.oecd()
+//	await download.imf()
 	
 	await download.usd_day()
+	await download.usd_month()
 
 }
 
@@ -285,7 +286,14 @@ download.usd_day=async function()
 		{
 			let c=fred_currency[n]
 			if(!dump[date]){dump[date]={}}
-			dump[date][c.iso]=it[n]
+			if(n.substring(0,2)=="US") // need to convert
+			{
+				dump[date][c.iso]=1.0/it[n]
+			}
+			else
+			{
+				dump[date][c.iso]=it[n]
+			}
 		}
 	}
 
@@ -310,6 +318,53 @@ download.usd_day=async function()
 
 
 	let filename=__dirname+"/../json/usd_day.json"
+	let old={}
+	try{ old=JSON.parse( fs.readFileSync(filename,{encoding:"utf8"}) ) }catch(e){}
+	for(let n in old){ if( (!dump[n]) ) { dump[n] = old[n] } } // include old data
+	fs.writeFileSync(filename,json_stringify(dump,{ space: ' ' })+"\n");
+
+}
+
+
+download.usd_month=async function()
+{
+	let oecd={}
+	try{ oecd=JSON.parse( fs.readFileSync(__dirname+"/../json/oecd.json",{encoding:"utf8"}) ) }catch(e){}
+
+	let day={}
+	try{ day=JSON.parse( fs.readFileSync(__dirname+"/../json/usd_day.json",{encoding:"utf8"}) ) }catch(e){}
+
+	let dump={}
+
+	let oecd_currency={} // map fred id
+	for( let n in download.currency )
+	{
+		let v=download.currency[n]
+		if(v.oecd)
+		{
+			oecd_currency[v.oecd]=v
+		}
+	}
+	
+	for( let date in oecd )
+	{
+		let it=oecd[date]
+		for( let n in it )
+		{
+			let c=oecd_currency[n]
+			if(!dump[date]){dump[date]={}}
+			dump[date][c.iso]=it[n]
+		}
+	}
+
+
+	for( let date in dump )
+	{
+		dump[date].USD=1 // USD always converts to 1
+	}
+
+
+	let filename=__dirname+"/../json/usd_month.json"
 	let old={}
 	try{ old=JSON.parse( fs.readFileSync(filename,{encoding:"utf8"}) ) }catch(e){}
 	for(let n in old){ if( (!dump[n]) ) { dump[n] = old[n] } } // include old data
