@@ -10,4 +10,15 @@ exports.date_to_idx=function(date)
 	return ((mm.year()-1970)*12)+mm.month()
 }
 
+exports.idx_to_date=function(idx)
+{
+	let m=idx%12
+	let y=(idx-m)/12
+	
+	let mmmm=""+m ; while(mmmm.length<4) { mmmm="0"+mmmm }
+	let   yy=""+y ; while(  yy.length<2) {   yy="0"+yy }
+
+	return mmmm+"-"+yy
+}
+
 require("./exchange_data.js").build(exports,require('../json/usd_month.json'))

@@ -10,4 +10,10 @@ exports.date_to_idx=function(date)
 	return (mm.year()-1970)
 }
 
+exports.idx_to_date=function(idx)
+{
+	return ""+(idx+1970)
+}
+
+
 require("./exchange_data.js").build(exports,require('../json/usd_year.json'))

@@ -29,6 +29,8 @@ exports.by_date=function(value,from_currency,to_currency,date)
 		if(ret!==undefined) { return ret }
 	}
 
+	date=exchange_year.clamp_date(date) // force into range 
+	
 	ret=exchange_year.by_date(value,from_currency,to_currency,date)
 	if(ret!==undefined) { return ret }
 
