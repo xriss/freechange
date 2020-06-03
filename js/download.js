@@ -79,7 +79,7 @@ download.currency=
 	"UYU":{ imf:"Uruguayan peso",                                },
 	"VEF":{ imf:"Bolivar Fuerte",                                },
 }
-
+for( let n in download.currency ) { download.currency[n].iso=n }
 
 
 download.all=async function()
@@ -87,6 +87,9 @@ download.all=async function()
 	await download.fred()
 	await download.oecd()
 	await download.imf()
+	
+	await download.usd_day()
+
 }
 
 download.imf=async function()
@@ -235,7 +238,7 @@ download.fred=async function()
 			for( line of lines )
 			{
 				let date  = line.DATE
-				let value = line["DEX"+cid]
+				let value = parseFloat(line["DEX"+cid])
 				if( !isNaN(value) )
 				{
 					if(!dump[date]){dump[date]={}} // init
@@ -251,5 +254,65 @@ download.fred=async function()
 	for(let n in old){ if( (!dump[n]) ) { dump[n] = old[n] } } // include old data
 	fs.writeFileSync(filename,json_stringify(dump,{ space: ' ' })+"\n");
 
+
+}
+
+
+download.usd_day=async function()
+{
+	let fred={}
+	try{ fred=JSON.parse( fs.readFileSync(__dirname+"/../json/fred.json",{encoding:"utf8"}) ) }catch(e){}
+
+	let imf={}
+	try{ imf=JSON.parse( fs.readFileSync(__dirname+"/../json/imf.json",{encoding:"utf8"}) ) }catch(e){}
+
+	let dump={}
+
+	let fred_currency={} // map fred id
+	for( let n in download.currency )
+	{
+		let v=download.currency[n]
+		if(v.fred)
+		{
+			fred_currency[v.fred]=v
+		}
+	}
+	
+	for( let date in fred )
+	{
+		let it=fred[date]
+		for( let n in it )
+		{
+			let c=fred_currency[n]
+			if(!dump[date]){dump[date]={}}
+			dump[date][c.iso]=it[n]
+		}
+	}
+
+	for( let date in imf )
+	{
+		let it=imf[date]
+		if(it.USD)
+		{
+			for( let n in it )
+			{
+				let c=download.currency[n]
+				if(!dump[date]){dump[date]={}}
+				dump[date][c.iso]=it[n]/it.USD
+			}
+		}
+	}
+
+	for( let date in dump )
+	{
+		dump[date].USD=1 // USD always converts to 1
+	}
+
+
+	let filename=__dirname+"/../json/usd_day.json"
+	let old={}
+	try{ old=JSON.parse( fs.readFileSync(filename,{encoding:"utf8"}) ) }catch(e){}
+	for(let n in old){ if( (!dump[n]) ) { dump[n] = old[n] } } // include old data
+	fs.writeFileSync(filename,json_stringify(dump,{ space: ' ' })+"\n");
 
 }
