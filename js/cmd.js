@@ -4,9 +4,6 @@
 
 var cmd=exports;
 
-var pfs=require("pify")( require("fs") )
-
-
 var ls=function(a) { console.log(util.inspect(a,{depth:null})); }
 
 

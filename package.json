@@ -3,25 +3,25 @@
   "description": "Code and data to perform historical currency exchange.",
   "version": "0.0.5",
   "license": "MIT",
-  "main": "dflat/js/cmd.js",
+  "main": "js/exchange.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/xriss/freechange.git",
     "directory": "live"
   },
   "bin": {
-    "freechange": "dflat/js/cmd.js"
+    "freechange": "js/cmd.js"
   },
   "directories": {},
   "dependencies": {
+    "moment": "^2.26.0"
+  },
+  "devDependencies": {
     "entities": "^2.0.2",
     "json-stable-stringify": "^1.0.1",
     "minimist": "^1.2.5",
-    "moment": "^2.26.0",
     "neat-csv": "^5.2.0",
     "node-fetch": "^2.6.0",
-    "pify": "^5.0.0",
     "sax": "^1.2.4"
-  },
-  "devDependencies": {}
+  }
 }
