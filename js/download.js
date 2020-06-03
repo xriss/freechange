@@ -435,6 +435,30 @@ download.usd_year=async function()
 	}
 
 
+	let data = fs.readFileSync(__dirname+"/../mybutt/year.csv",{encoding:"utf8"})
+	let lines = await csvparse( data )
+	for( let line of lines )
+	{
+		let date=line.year
+		for( let n in line )
+		{
+			if(n!="year")
+			{
+				let value=parseFloat(line[n])
+				if(!isNaN(value))
+				{
+					if( (!dump[date]) || (!dump[date][n]) )
+					{
+						if(!dump[date]){dump[date]={}}
+						dump[date][n]=value
+					}
+				}
+			}
+		}
+	}
+
+
+
 	let filename=__dirname+"/../json/usd_year.json"
 	let old={}
 	try{ old=JSON.parse( fs.readFileSync(filename,{encoding:"utf8"}) ) }catch(e){}
