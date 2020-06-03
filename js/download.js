@@ -90,6 +90,7 @@ download.all=async function()
 	
 	await download.usd_day()
 	await download.usd_month()
+	await download.usd_year()
 
 }
 
@@ -389,6 +390,52 @@ download.usd_month=async function()
 
 
 	let filename=__dirname+"/../json/usd_month.json"
+	let old={}
+	try{ old=JSON.parse( fs.readFileSync(filename,{encoding:"utf8"}) ) }catch(e){}
+	for(let n in old){ if( (!dump[n]) ) { dump[n] = old[n] } } // include old data
+	fs.writeFileSync(filename,json_stringify(dump,{ space: ' ' })+"\n");
+
+}
+
+
+download.usd_year=async function()
+{
+	let month={}
+	try{ month=JSON.parse( fs.readFileSync(__dirname+"/../json/usd_month.json",{encoding:"utf8"}) ) }catch(e){}
+
+	let dump={}
+
+	let year={}
+	for( let date in month )
+	{
+		let date_year=date.substring(0,4)
+		let it=month[date]
+		for( let n in it )
+		{
+			if( ! year[date_year]    ) { year[date_year]={} }
+			if( ! year[date_year][n] ) { year[date_year][n]=[0,0] } // bucket
+			year[date_year][n][0]+=it[n]
+			year[date_year][n][1]+=1
+		}
+	}
+	for( let date in year )
+	{
+		let it=year[date]
+		for( let n in it )
+		{
+			if(!dump[date]){dump[date]={}}
+			dump[date][n]=it[n][0]/it[n][1] // average of all samples
+		}
+	}
+
+
+	for( let date in dump )
+	{
+		dump[date].USD=1 // USD always converts to 1
+	}
+
+
+	let filename=__dirname+"/../json/usd_year.json"
 	let old={}
 	try{ old=JSON.parse( fs.readFileSync(filename,{encoding:"utf8"}) ) }catch(e){}
 	for(let n in old){ if( (!dump[n]) ) { dump[n] = old[n] } } // include old data
