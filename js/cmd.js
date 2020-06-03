@@ -23,6 +23,13 @@ cmd.run=async function(argv)
 		await require("./download.js").all()
 		return
 	}
+	if( argv._[0]=="exchange" )
+	{
+		let exchange=require("./exchange.js")
+		let ret=exchange.byisodate( parseFloat(argv._[1]) , argv._[2] , argv._[3] , argv._[4] )
+		console.log(ret)
+		return
+	}
 
 	// help text
 	console.log(
@@ -31,6 +38,10 @@ cmd.run=async function(argv)
 
 Fetch remote files and update cached data this should be run daily to 
 keep the json files uptodate.
+
+>	freechange exchange 1.0 GBP USD 2000-01-01
+
+Exchange from first currency into second using rates at given isodate.
 
 `)
 }
