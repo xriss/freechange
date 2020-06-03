@@ -20,6 +20,7 @@ for( const ms in iso_month )
 	if(m<min_month) { min_month=m }
 	if(m>max_month) { max_month=m }
 }
+delete iso_month
 
 // first make sure all known currencies have a starting value
 let start={}

@@ -19,6 +19,7 @@ for( const ys in iso_year )
 	if(y<min_year) { min_year=y }
 	if(y>max_year) { max_year=y }
 }
+delete iso_year
 
 // first make sure all known currencies have a starting value
 let start={}
