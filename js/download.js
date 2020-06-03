@@ -84,9 +84,9 @@ for( let n in download.currency ) { download.currency[n].iso=n }
 
 download.all=async function()
 {
-//	await download.fred()
-//	await download.oecd()
-//	await download.imf()
+	await download.fred()
+	await download.oecd()
+	await download.imf()
 	
 	await download.usd_day()
 	await download.usd_month()
