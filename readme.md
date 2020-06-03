@@ -1,67 +1,66 @@
-underconstruction...
+
+
+This will include a few meg of historical json, so be warned we are 
+data heavy by default.
+
+
+	var freechange = require("freechange")
+
+	console.log( freechange.by_date(100,"GBP","USD") )
+	console.log( freechange.by_date(100,"GBP","USD","2010") )
+	console.log( freechange.by_date(100,"GBP","USD","2010-01") )
+	console.log( freechange.by_date(100,"GBP","USD","2010-01-01") )
 
 
 
-in order of preference we should try
+Without a date, we use the current date which will be a bit wobbly and 
+not what we are all about.
 
+With a year we will use yearly averages for the given year or closest 
+year if it is out of the range of data.
+
+With a month we will use yearly averages for the given year and month or 
+switch to yearly average if the date is out of the range of our monthly 
+data.
+
+With a day we will use daily numbers for the given day and year and 
+month or switch to monthly and then yearly average if the date is out 
+of the range of our data.
+
+
+
+
+When it comes to sourcing the data we use in order of preference 
+numbers from the following sources and you can find the latest data we 
+grabbed in the json directory.
 
 
 IMF : Daily
 
-we can cycle through each month and get rather messy daily numbers from 
-here and note that currently 2003-04-01 is the first working date and 
-each request is rather slow to complete.
+https://www.imf.org
 
-https://www.imf.org/external/np/fin/data/rms_mth.aspx?SelectDate=2003-04-01&reportType=CVSDR&tsvflag=Y
-
-
-
+https://github.com/xriss/freechange/blob/master/json/imf.json
 
 
 FRED : Daily
 
-
 from https://fred.stlouisfed.org/categories/94
 
-available USD to XXX or XXX to USD feeds are
-
-DEXUSEU,DEXKOUS,DEXMXUS,DEXUSAL,DEXBZUS,DEXINUS,DEXSZUS,DEXJPUS,DEXVZUS,DEXTHUS,DTWEXO,DEXSFUS,DEXTAUS,DEXMAUS,DEXHKUS,DEXSDUS,DEXNOUS,DEXSIUS,DEXUSNZ,DEXDNUS,DEXSLUS,DEXCHUS,DEXUSUK,DEXCAUS,
-
-FYI that DEX is Daily Exchange and can also be changed to EX for 
-monthly or YEX for yearly and the characters following are 
-abbreviations for a country ( country codes? ) and US for USD, 
-sometimes it is too USD sometimes it is from USD depending on where the 
-US is placed
-
-
-and the full series of DEXUSEU so that would be USD to EUR can be grabbed with
-
-https://fred.stlouisfed.org/graph/fredgraph.csv?id=DEXUSEU
-
-
-
-
+https://github.com/xriss/freechange/blob/master/json/fred.json
 
 
 OECD : Monthly
 
-
-need to ask for each currency separately
-
-AUS+AUT+BEL+CAN+CHL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ISR+ITA+JPN+KOR+LVA+LUX+MEX+NLD+NZL+NOR+POL+PRT+SVK+SVN+ESP+SWE+CHE+TUR+GBR+USA+EA19+SDR+NMEC+BRA+CHN+COL+CRI+IND+IDN+RUS+ZAF
-
-eg
-
 https://stats.oecd.org/restsdmx/sdmx.ashx/GetData/MEI_FIN/CCUS.AUS.M/all?startTime=1940-01
-https://stats.oecd.org/restsdmx/sdmx.ashx/GetData/MEI_FIN/CCUS.GBR.M/all?startTime=1940-01
 
-
-
+https://github.com/xriss/freechange/blob/master/json/oecd.json
 
 
 MYBUTT : Yearly
 
+https://github.com/xriss/freechange/blob/master/mybutt/year.csv
 
-this folder contains handmade csv for when every other source fails
+The mybutt folder in this repository contains handmade csv for when 
+every other source fails.
 
 
