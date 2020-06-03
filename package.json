@@ -1,7 +1,7 @@
 {
   "name": "freechange",
   "description": "Code and data to perform historical currency exchange.",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "license": "MIT",
   "main": "js/exchange.js",
   "repository": {
