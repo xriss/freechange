@@ -358,6 +358,30 @@ download.usd_month=async function()
 	}
 
 
+	let month={}
+	for( let date in day )
+	{
+		let date_month=date.substring(0,7)
+		let it=day[date]
+		for( let n in it )
+		{
+			if( ! month[date_month]    ) { month[date_month]={} }
+			if( ! month[date_month][n] ) { month[date_month][n]=[0,0] } // bucket
+			month[date_month][n][0]+=it[n]
+			month[date_month][n][1]+=1
+		}
+	}
+	for( let date in month )
+	{
+		let it=month[date]
+		for( let n in it )
+		{
+			if(!dump[date]){dump[date]={}}
+			dump[date][n]=it[n][0]/it[n][1] // average of all samples
+		}
+	}
+
+
 	for( let date in dump )
 	{
 		dump[date].USD=1 // USD always converts to 1
