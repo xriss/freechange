@@ -26,7 +26,7 @@ cmd.run=async function(argv)
 	if( argv._[0]=="exchange" )
 	{
 		let exchange=require("./exchange.js")
-		let ret=exchange.byisodate( parseFloat(argv._[1]) , argv._[2] , argv._[3] , argv._[4] )
+		let ret=exchange.by_date( parseFloat( Number( argv._[1]) ) , argv._[2] , argv._[3] , String( argv._[4] ) )
 		console.log(ret)
 		return
 	}
@@ -41,7 +41,8 @@ keep the json files uptodate.
 
 >	freechange exchange 1.0 GBP USD 2000-01-01
 
-Exchange from first currency into second using rates at given isodate.
+Exchange from first currency into second using rates at given date. If 
+ommited the date will default to today and the cuurencies to USD.
 
 `)
 }

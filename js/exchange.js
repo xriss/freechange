@@ -10,17 +10,26 @@ let exchange_day=require("./exchange_day.js")
 
 
 
-exports.byisodate=function(value,to_currency,from_currency,isodate)
+exports.by_date=function(value,from_currency,to_currency,date)
 {
+	let len=10
 	let ret
+	
+	if(typeof date=="string") { len=date.length } // length of date string
+	
+	if(len>7) // 2000-01-01
+	{
+		ret=exchange_day.by_date(value,from_currency,to_currency,date)
+		if(ret!==undefined) { return ret }
+	}
 
-	ret=exchange_day.byisodate(value,to_currency,from_currency,isodate)
-	if(ret!==undefined) { return ret }
+	if(len>4) // 2000-01
+	{
+		ret=exchange_month.by_date(value,from_currency,to_currency,date)
+		if(ret!==undefined) { return ret }
+	}
 
-	ret=exchange_month.byisodate(value,to_currency,from_currency,isodate)
-	if(ret!==undefined) { return ret }
-
-	ret=exchange_year.byisodate(value,to_currency,from_currency,isodate)
+	ret=exchange_year.by_date(value,from_currency,to_currency,date)
 	if(ret!==undefined) { return ret }
 
 }
