@@ -6,7 +6,7 @@ let iso_year=require('../json/usd_year.json')
 
 let min_year= 9999
 let max_year=-9999
-let years=[] // number of years since epoch of 1970-01-01 which is considered month 0
+let years=[] // number of years since epoch of 1970-01-01 which is considered year 0
 
 for( const ys in iso_year )
 {

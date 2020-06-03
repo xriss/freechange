@@ -8,7 +8,7 @@ let iso_day=require('../json/usd_day.json')
 
 let min_day= 9999*12*32
 let max_day=-9999*12*32
-let days=[] // number of months since epoch of 1970-01-01 which is considered month 0
+let days=[] // number of days since epoch of 1970-01-01 which is considered day 0
 
 for( const ds in iso_day )
 {
