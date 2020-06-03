@@ -29,7 +29,8 @@ cmd.run=async function(argv)
 `
 >	freechange download
 
-Fetch remote files and update cached data
+Fetch remote files and update cached data this should be run daily to 
+keep the json files uptodate.
 
 `)
 }

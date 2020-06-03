@@ -17,6 +17,71 @@ const json_stringify = require('json-stable-stringify')
 const jml = require('./jml.js')
 
 
+
+download.currency=
+{
+	"HKD":{                                         fred:"HKUS", },
+	"TWD":{                                         fred:"TAUS", },
+	"VES":{                                         fred:"VZUS", },
+	"CRC":{                            oecd:"CRI",               },
+	"XDR":{                            oecd:"SDR",               },
+	"TRL":{                            oecd:"TUR",               },
+	"LVL":{                            oecd:"LVA",               },
+	"CNY":{ imf:"Chinese yuan",        oecd:"CHN",  fred:"CHUS", },
+	"EUR":{ imf:"Euro",                oecd:"EA19", fred:"USEU", },
+	"JPY":{ imf:"Japanese yen",        oecd:"JPN",  fred:"JPUS", },
+	"GBP":{ imf:"U.K. pound",          oecd:"GBR",  fred:"USUK", },
+	"USD":{ imf:"U.S. dollar",                                   },
+	"DZD":{ imf:"Algerian dinar",                                },
+	"AUD":{ imf:"Australian dollar",   oecd:"AUS",  fred:"USAL", },
+	"BHD":{ imf:"Bahrain dinar",                                 },
+	"BWP":{ imf:"Botswana pula",                                 },
+	"BRL":{ imf:"Brazilian real",      oecd:"BRA",  fred:"BZUS", },
+	"BND":{ imf:"Brunei dollar",                                 },
+	"CAD":{ imf:"Canadian dollar",     oecd:"CAN",  fred:"CAUS", },
+	"CLP":{ imf:"Chilean peso",        oecd:"CHL",               },
+	"COP":{ imf:"Colombian peso",      oecd:"COL",               },
+	"CZK":{ imf:"Czech koruna",        oecd:"CZE",               },
+	"DKK":{ imf:"Danish krone",        oecd:"DNK",  fred:"DNUS", },
+	"HUF":{ imf:"Hungarian forint",    oecd:"HUN",               },
+	"ISK":{ imf:"Icelandic krona",     oecd:"ISL",               },
+	"INR":{ imf:"Indian rupee",        oecd:"IND",  fred:"INUS", },
+	"IDR":{ imf:"Indonesian rupiah",   oecd:"IDN",               },
+	"IRR":{ imf:"Iranian rial",                                  },
+	"ILS":{ imf:"Israeli New Shekel",  oecd:"ISR",               },
+	"KZT":{ imf:"Kazakhstani tenge",                             },
+	"KRW":{ imf:"Korean won",          oecd:"KOR",  fred:"KOUS", },
+	"KWD":{ imf:"Kuwaiti dinar",                                 },
+	"LYD":{ imf:"Libyan dinar",                                  },
+	"MYR":{ imf:"Malaysian ringgit",                fred:"MAUS", },
+	"MUR":{ imf:"Mauritian rupee",                               },
+	"MXN":{ imf:"Mexican peso",        oecd:"MEX",  fred:"MXUS", },
+	"NPR":{ imf:"Nepalese rupee",                                },
+	"NZD":{ imf:"New Zealand dollar",  oecd:"NZL",  fred:"USNZ", },
+	"NOK":{ imf:"Norwegian krone",     oecd:"NOR",  fred:"NOUS", },
+	"OMR":{ imf:"Omani rial",                                    },
+	"PKR":{ imf:"Pakistani rupee",                               },
+	"PEN":{ imf:"Peruvian sol",                                  },
+	"PHP":{ imf:"Philippine peso",                               },
+	"PLN":{ imf:"Polish zloty",        oecd:"POL",               },
+	"QAR":{ imf:"Qatari riyal",                                  },
+	"RUB":{ imf:"Russian ruble",       oecd:"RUS",               },
+	"SAR":{ imf:"Saudi Arabian riyal",                           },
+	"SGD":{ imf:"Singapore dollar",                 fred:"SIUS", },
+	"ZAR":{ imf:"South African rand",  oecd:"ZAF",  fred:"SFUS", },
+	"LKR":{ imf:"Sri Lankan rupee",                 fred:"SLUS", },
+	"SEK":{ imf:"Swedish krona",       oecd:"SWE",  fred:"SDUS", },
+	"CHF":{ imf:"Swiss franc",         oecd:"CHE",  fred:"SZUS", },
+	"THB":{ imf:"Thai baht",                        fred:"THUS", },
+	"TTD":{ imf:"Trinidadian dollar",                            },
+	"TND":{ imf:"Tunisian dinar",                                },
+	"AED":{ imf:"U.A.E. dirham",                                 },
+	"UYU":{ imf:"Uruguayan peso",                                },
+	"VEF":{ imf:"Bolivar Fuerte",                                },
+}
+
+
+
 download.all=async function()
 {
 	await download.fred()
@@ -27,68 +92,16 @@ download.all=async function()
 download.imf=async function()
 {
 
-	let xes={
-
-"Chinese yuan"				:	"CNY",
-"Euro"						:	"EUR",
-"Japanese yen"				:	"JPY",
-"U.K. pound"				:	"GBP",
-"U.S. dollar"				:	"USD",
-"Algerian dinar"			:	"DZD",
-"Australian dollar"			:	"AUD",
-"Bahrain dinar"				:	"BHD",
-"Botswana pula"				:	"BWP",
-"Brazilian real"			:	"BRL",
-"Brunei dollar"				:	"BND",
-"Canadian dollar"			:	"CAD",
-"Chilean peso"				:	"CLP",
-"Colombian peso"			:	"COP",
-"Czech koruna"				:	"CZK",
-"Danish krone"				:	"DKK",
-"Hungarian forint"			:	"HUF",
-"Icelandic krona"			:	"ISK",
-"Indian rupee"				:	"INR",
-"Indonesian rupiah"			:	"IDR",
-"Iranian rial"				:	"IRR",
-"Israeli New Shekel"		:	"ILS",
-"Kazakhstani tenge"			:	"KZT",
-"Korean won"				:	"KRW",
-"Kuwaiti dinar"				:	"KWD",
-"Libyan dinar"				:	"LYD",
-"Malaysian ringgit"			:	"MYR",
-"Mauritian rupee"			:	"MUR",
-"Mexican peso"				:	"MXN",
-"Nepalese rupee"			:	"NPR",
-"New Zealand dollar"		:	"NZD",
-"Norwegian krone"			:	"NOK",
-"Omani rial"				:	"OMR",
-"Pakistani rupee"			:	"PKR",
-"Peruvian sol"				:	"PEN",
-"Philippine peso"			:	"PHP",
-"Polish zloty"				:	"PLN",
-"Qatari riyal"				:	"QAR",
-"Russian ruble"				:	"RUB",
-"Saudi Arabian riyal"		:	"SAR",
-"Singapore dollar"			:	"SGD",
-"South African rand"		:	"ZAR",
-"Sri Lankan rupee"			:	"LKR",
-"Swedish krona"				:	"SEK",
-"Swiss franc"				:	"CHF",
-"Thai baht"					:	"THB",
-"Trinidadian dollar"		:	"TTD",
-"Tunisian dinar"			:	"TND",
-"U.A.E. dirham"				:	"AED",
-"Uruguayan peso"			:	"UYU",
-"Bolivar Fuerte"			:	"VEF",
-
-}
-
-
-	let unknown={}
-
 	let xes_low={};
-	for(let n in xes) { xes_low[ n.toLowerCase() ]=xes[n]; } //l case
-		
+	for(let n in download.currency)
+	{
+		let v=download.currency[n]
+		if(v.imf)
+		{
+			xes_low[ v.imf.toLowerCase() ] = n
+		}
+	}
+
 	let dump={}
 
 	var this_year=(new Date()).getYear()+1900; // get this year
@@ -150,77 +163,47 @@ download.imf=async function()
 download.oecd=async function()
 {
 
-// map currency codes to download
-
-let cids=[
-	"AUS",
-	"CAN",
-	"CHL",
-	"CZE",
-	"DNK",
-	"HUN",
-	"ISL",
-	"ISR",
-	"JPN",
-	"KOR",
-	"LVA",
-	"MEX",
-	"NZL",
-	"NOR",
-	"POL",
-	"SWE",
-	"CHE",
-	"TUR",
-	"GBR",
-	"EA19",
-	"SDR",
-	"BRA",
-	"CHN",
-	"COL",
-	"CRI",
-	"IND",
-	"IDN",
-	"RUS",
-	"ZAF",
-]
-
-
 	let dump={}
-	for( let cid of cids )
+	for( let n in download.currency )
 	{
-
-		console.log("Downloading Monthly OECD data for "+cid)
-		
-		let url="https://stats.oecd.org/restsdmx/sdmx.ashx/GetData/MEI_FIN/CCUS."+cid+".M/all?startTime=1940-01"
-		let data = await fetch(url).then(res => res.text())
-		let tree
-		try{ tree=jml.from_xml(data) }catch(e){}
-
-		if(tree)
+		let v=download.currency[n]
+		let cid=v.oecd
+		if(cid)
 		{
 
-			let date="0000-00"		
-			jml.walk_xpath(tree,function(it,path){
+			console.log("Downloading Monthly OECD data for "+cid)
+			
+			let url="https://stats.oecd.org/restsdmx/sdmx.ashx/GetData/MEI_FIN/CCUS."+cid+".M/all?startTime=1940-01"
+			let data = await fetch(url).then(res => res.text())
+			let tree
+			try{ tree=jml.from_xml(data) }catch(e){}
 
-				if(path=="/message:MessageGroup/DataSet/Series/Obs/Time")
-				{
-					date=it[1][0]
-				}
-				else
-				if(path=="/message:MessageGroup/DataSet/Series/Obs/ObsValue")
-				{
-					let value=parseFloat(it.value)
+			if(tree)
+			{
 
-					if( !isNaN(value) )
+				let date="0000-00"		
+				jml.walk_xpath(tree,function(it,path){
+
+					if(path=="/message:MessageGroup/DataSet/Series/Obs/Time")
 					{
-						if(!dump[date]){dump[date]={}} // init
-						dump[date][cid]=value
+						date=it[1][0]
 					}
-				}
+					else
+					if(path=="/message:MessageGroup/DataSet/Series/Obs/ObsValue")
+					{
+						let value=parseFloat(it.value)
 
-			})
+						if( !isNaN(value) )
+						{
+							if(!dump[date]){dump[date]={}} // init
+							dump[date][cid]=value
+						}
+					}
+
+				})
+			}
+
 		}
-
 	}
 
 	let filename=__dirname+"/../json/oecd.json"
@@ -235,57 +218,31 @@ let cids=[
 download.fred=async function()
 {
 
-// map currency codes to download
-
-let cids=[
-
-	"USEU",
-	"KOUS",
-	"MXUS",
-	"USAL",
-	"BZUS",
-	"INUS",
-	"SZUS",
-	"JPUS",
-	"VZUS",
-	"THUS",
-	"SFUS",
-	"TAUS",
-	"MAUS",
-	"HKUS",
-	"SDUS",
-	"NOUS",
-	"SIUS",
-	"USNZ",
-	"DNUS",
-	"SLUS",
-	"CHUS",
-	"USUK",
-	"CAUS",
-
-]
-
 	let dump={}
-	for( let cid of cids )
+	for( let n in download.currency )
 	{
-
-		console.log("Downloading Daily FRED data for "+cid)
-		
-		let url="https://fred.stlouisfed.org/graph/fredgraph.csv?id=DEX"+cid
-		let data = await fetch(url).then(res => res.text())
-		let lines = await csvparse( data )
-
-		for( line of lines )
+		let v=download.currency[n]
+		let cid=v.fred
+		if(cid)
 		{
-			let date  = line.DATE
-			let value = line["DEX"+cid]
-			if( !isNaN(value) )
+
+			console.log("Downloading Daily FRED data for "+cid)
+			
+			let url="https://fred.stlouisfed.org/graph/fredgraph.csv?id=DEX"+cid
+			let data = await fetch(url).then(res => res.text())
+			let lines = await csvparse( data )
+
+			for( line of lines )
 			{
-				if(!dump[date]){dump[date]={}} // init
-				dump[date][cid]=value
+				let date  = line.DATE
+				let value = line["DEX"+cid]
+				if( !isNaN(value) )
+				{
+					if(!dump[date]){dump[date]={}} // init
+					dump[date][cid]=value
+				}
 			}
 		}
-
 	}
 
 	let filename=__dirname+"/../json/fred.json"
