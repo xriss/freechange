@@ -3,7 +3,7 @@
   "description": "Code and data to perform historical currency exchange.",
   "version": "0.0.7",
   "license": "MIT",
-  "main": "js/exchange.js",
+  "main": "day.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/xriss/freechange.git",

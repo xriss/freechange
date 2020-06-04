@@ -3,9 +3,8 @@
 
 
 
-let exchange_year=require("./exchange_year.js")
-let exchange_month=require("./exchange_month.js")
-let exchange_day=require("./exchange_day.js")
+let exchange_year=require("js/exchange_year.js")
+let exchange_month=require("js/exchange_month.js")
 
 
 
@@ -17,12 +16,6 @@ exports.by_date=function(value,from_currency,to_currency,date)
 	
 	if(typeof date=="string") { len=date.length } // length of date string
 	
-	if(len>7) // 2000-01-01
-	{
-		ret=exchange_day.by_date(value,from_currency,to_currency,date)
-		if(ret!==undefined) { return ret }
-	}
-
 	if(len>4) // 2000-01
 	{
 		ret=exchange_month.by_date(value,from_currency,to_currency,date)
