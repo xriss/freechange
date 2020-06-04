@@ -16,4 +16,4 @@ exports.idx_to_date=function(idx)
 }
 
 
-require("./exchange_data.js").build(exports,require('../json/usd_year.json'))
+require("./exchange_data.js").build(exports,require('../json/usd_to_xxx_by_year.json'))

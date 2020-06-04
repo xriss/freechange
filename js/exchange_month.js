@@ -21,4 +21,4 @@ exports.idx_to_date=function(idx)
 	return mmmm+"-"+yy
 }
 
-require("./exchange_data.js").build(exports,require('../json/usd_month.json'))
+require("./exchange_data.js").build(exports,require('../json/usd_to_xxx_by_month.json'))

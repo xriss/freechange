@@ -318,7 +318,7 @@ download.usd_day=async function()
 	}
 
 
-	let filename=__dirname+"/../json/usd_day.json"
+	let filename=__dirname+"/../json/usd_to_xxx_by_day.json"
 	let old={}
 	try{ old=JSON.parse( fs.readFileSync(filename,{encoding:"utf8"}) ) }catch(e){}
 	for(let n in old){ if( (!dump[n]) ) { dump[n] = old[n] } } // include old data
@@ -333,7 +333,7 @@ download.usd_month=async function()
 	try{ oecd=JSON.parse( fs.readFileSync(__dirname+"/../json/oecd.json",{encoding:"utf8"}) ) }catch(e){}
 
 	let day={}
-	try{ day=JSON.parse( fs.readFileSync(__dirname+"/../json/usd_day.json",{encoding:"utf8"}) ) }catch(e){}
+	try{ day=JSON.parse( fs.readFileSync(__dirname+"/../json/usd_to_xxx_by_day.json",{encoding:"utf8"}) ) }catch(e){}
 
 	let dump={}
 
@@ -389,7 +389,7 @@ download.usd_month=async function()
 	}
 
 
-	let filename=__dirname+"/../json/usd_month.json"
+	let filename=__dirname+"/../json/usd_to_xxx_by_month.json"
 	let old={}
 	try{ old=JSON.parse( fs.readFileSync(filename,{encoding:"utf8"}) ) }catch(e){}
 	for(let n in old){ if( (!dump[n]) ) { dump[n] = old[n] } } // include old data
@@ -401,7 +401,7 @@ download.usd_month=async function()
 download.usd_year=async function()
 {
 	let month={}
-	try{ month=JSON.parse( fs.readFileSync(__dirname+"/../json/usd_month.json",{encoding:"utf8"}) ) }catch(e){}
+	try{ month=JSON.parse( fs.readFileSync(__dirname+"/../json/usd_to_xxx_by_month.json",{encoding:"utf8"}) ) }catch(e){}
 
 	let dump={}
 
@@ -459,7 +459,7 @@ download.usd_year=async function()
 
 
 
-	let filename=__dirname+"/../json/usd_year.json"
+	let filename=__dirname+"/../json/usd_to_xxx_by_year.json"
 	let old={}
 	try{ old=JSON.parse( fs.readFileSync(filename,{encoding:"utf8"}) ) }catch(e){}
 	for(let n in old){ if( (!dump[n]) ) { dump[n] = old[n] } } // include old data

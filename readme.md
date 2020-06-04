@@ -37,12 +37,21 @@ With a day we will use daily numbers for the given day or switch to
 monthly and then yearly average if the date is out of the range of our 
 data.
 
+If you want to reduce the amount of memory used by data then you can 
+reduce the maximum resolution from day to month or year by changing to 
+one of the following requires. This will allow you to explicitly choose 
+the resolution and reduce accuracy and size.
 
 
+	var freechange = require("freechange/day")
+	var freechange = require("freechange/month")
+	var freechange = require("freechange/year")
 
-When it comes to sourcing the data we use in order of preference 
+
+When it comes to sourcing the data we use ( in order of preference ) 
 numbers from the following sources. You can find the latest data we 
-grabbed in the json directory.
+grabbed in the json directory along with generated usd_to_xxx exchange 
+rates for days months and years.
 
 
 IMF : Daily
