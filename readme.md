@@ -24,11 +24,14 @@ The currencies given are three letter ISO-4217 codes
 
 https://en.wikipedia.org/wiki/ISO_4217
 
-The list of currencies we support can be found at the top of this 
+The list of currencies we support well can be found at the top of this 
 source file 
 https://github.com/xriss/freechange/blob/master/js/download.js where 
 downloads.currencies is a data mapping table used to parse and convert 
-the downloaded data.
+the downloaded data. The list of currencies we support badly and the 
+data we use as last resort can be found at 
+https://github.com/xriss/freechange/blob/master/mybutt/year.csv
+
 
 Without a date, we use todays date ( we let the moment module parse the 
 date string ) which will be a bit wobbly and not provide good results. 
@@ -80,28 +83,28 @@ rates for days months and years.
 
 ### IMF : Daily
 
-https://www.imf.org/external/np/fin/data/param_rms_mth.aspx
+from https://www.imf.org/external/np/fin/data/param_rms_mth.aspx
 
-https://github.com/xriss/freechange/blob/master/json/imf.json
+to https://github.com/xriss/freechange/blob/master/json/imf.json
 
 
 ### FRED : Daily
 
 from https://fred.stlouisfed.org/categories/94
 
-https://github.com/xriss/freechange/blob/master/json/fred.json
+to https://github.com/xriss/freechange/blob/master/json/fred.json
 
 
 ### OECD : Monthly
 
-https://data.oecd.org/conversion/exchange-rates.htm
+from https://data.oecd.org/conversion/exchange-rates.htm
 
-https://github.com/xriss/freechange/blob/master/json/oecd.json
+to https://github.com/xriss/freechange/blob/master/json/oecd.json
 
 
 ### MYBUTT : Yearly
 
-https://github.com/xriss/freechange/blob/master/mybutt/year.csv
+from https://github.com/xriss/freechange/blob/master/mybutt/year.csv
 
 The mybutt folder in this repository contains handmade csv for when 
 every other source fails.
@@ -109,8 +112,8 @@ every other source fails.
 
 ### OUTPUT
 
-All of these sources are combined into the following output json files which 
-you could use directly outside of this module.
+All of these sources are combined into the following output json files 
+which contain data you could use directly outside of this module.
 
 
 https://github.com/xriss/freechange/blob/master/json/usd_to_xxx_by_day.json
