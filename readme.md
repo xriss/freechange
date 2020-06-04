@@ -6,7 +6,7 @@
 
 
 This will include a few meg of historical json, so be warned we are 
-very data heavy by default. See below for oprions to reduce this size.
+very data heavy. See below for options to reduce this size.
 
 
 	var freechange = require("freechange")
@@ -17,13 +17,17 @@ very data heavy by default. See below for oprions to reduce this size.
 	console.log( freechange.by_date(100,"GBP","USD","2010-01-01") )
 
 
-exchange 100 GBP to USD
+This will exchange 100 GBP to USD multiple times, using slightly 
+different dates.
+
+The currencies given are three letter ISO-4217 codes 
+https://en.wikipedia.org/wiki/ISO_4217
 
 Without a date, we use todays date ( we let the moment module parse the 
 date string ) which will be a bit wobbly and not provide good results. 
 We have a focus on historical data which is included in the library so 
-this call will give different results depending on when you install the 
-package and when we last updated the packag with newer data.
+this call will give different results depending on when you installed the 
+package and when we last updated the package with newer data.
 
 So to recap, times in the past are good and stable, times in the future 
 are not and if you mostly care about todays exchange rates then you 
@@ -42,11 +46,16 @@ With a day we will use daily numbers for the given day or switch to
 monthly and then yearly average if the date is out of the range of our 
 data.
 
+This function will return a number if it is successful or undefined if 
+it is not, eg we do could not find the currency you requested.
+
+
 If you want to reduce the amount of memory used by data then you can 
 reduce the maximum resolution from day to month or year by changing to 
 one of the following requires. This allows you to explicitly choose the 
 resolutions available to reduce accuracy and more importantly data 
 size.
+
 
 
 	var freechange = require("freechange/day")
