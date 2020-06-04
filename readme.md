@@ -1,5 +1,5 @@
 
-#FreeChange
+# FreeChange
 
 
 	npm install freechange
@@ -54,7 +54,7 @@ size.
 	var freechange = require("freechange/year")
 
 
-# DATA
+## DATA
 
 When it comes to sourcing the data we use ( in order of preference ) 
 numbers from the following sources. You can find the latest data we 
@@ -62,28 +62,28 @@ grabbed in the json directory along with generated usd_to_xxx exchange
 rates for days months and years.
 
 
-## IMF : Daily
+### IMF : Daily
 
 https://www.imf.org/external/np/fin/data/param_rms_mth.aspx
 
 https://github.com/xriss/freechange/blob/master/json/imf.json
 
 
-## FRED : Daily
+### FRED : Daily
 
 from https://fred.stlouisfed.org/categories/94
 
 https://github.com/xriss/freechange/blob/master/json/fred.json
 
 
-## OECD : Monthly
+### OECD : Monthly
 
 https://data.oecd.org/conversion/exchange-rates.htm
 
 https://github.com/xriss/freechange/blob/master/json/oecd.json
 
 
-## MYBUTT : Yearly
+### MYBUTT : Yearly
 
 https://github.com/xriss/freechange/blob/master/mybutt/year.csv
 
@@ -91,7 +91,7 @@ The mybutt folder in this repository contains handmade csv for when
 every other source fails.
 
 
-## OUTPUT
+### OUTPUT
 
 All of these sources are combined into the following output json files which 
 you could use directly outside of this module.
