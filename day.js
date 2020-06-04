@@ -3,9 +3,9 @@
 
 
 
-let exchange_year=require("js/exchange_year.js")
-let exchange_month=require("js/exchange_month.js")
-let exchange_day=require("js/exchange_day.js")
+let exchange_year=require("./js/exchange_year.js")
+let exchange_month=require("./js/exchange_month.js")
+let exchange_day=require("./js/exchange_day.js")
 
 
 

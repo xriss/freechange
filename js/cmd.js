@@ -22,8 +22,8 @@ cmd.run=async function(argv)
 	}
 	if( argv._[0]=="exchange" )
 	{
-		let exchange=require("./exchange.js")
-		let ret=exchange.by_date( parseFloat( Number( argv._[1]) ) , argv._[2] , argv._[3] , argv._[4] && String(argv._[4]) )
+		let freechange=require("../day.js")
+		let ret=freechange.by_date( parseFloat( Number( argv._[1]) ) , argv._[2] , argv._[3] , argv._[4] && String(argv._[4]) )
 		console.log(ret)
 		return
 	}

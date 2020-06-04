@@ -3,7 +3,7 @@
 
 
 
-let exchange_year=require("js/exchange_year.js")
+let exchange_year=require("./js/exchange_year.js")
 
 
 
