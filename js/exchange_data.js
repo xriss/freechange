@@ -64,10 +64,9 @@ exports.build=function(base,rawdata)
 		from_currency=(from_currency||"USD").toUpperCase()
 
 		let idx=base.date_to_idx(date)
-		if( idx < base.min_idx ) { return }
-		if( idx > base.max_idx ) { return }
 		let x=base.data[idx]
-		
+		if( !x ) { return }
+
 		let fx = x[from_currency]
 		let tx = x[to_currency  ]	
 
