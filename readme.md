@@ -21,7 +21,14 @@ This will exchange 100 GBP to USD multiple times, using slightly
 different dates.
 
 The currencies given are three letter ISO-4217 codes 
+
 https://en.wikipedia.org/wiki/ISO_4217
+
+The list of currencies we support can be found at the top of this 
+source file 
+https://github.com/xriss/freechange/blob/master/js/download.js where 
+downloads.currencies is a data mapping table used to parse and convert 
+the downloaded data.
 
 Without a date, we use todays date ( we let the moment module parse the 
 date string ) which will be a bit wobbly and not provide good results. 
