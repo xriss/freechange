@@ -33,9 +33,12 @@ exports.build=function(base,rawdata)
 			}
 		}
 	}
-	base.data[base.min_idx-1]=start
+	base.min_idx=base.min_idx-1
+	base.data[base.min_idx]={} // min_idx is always empty (so we know to move from day to month to year when date is clamped to min/max)
+	base.data[base.min_idx-1]=start // min_idx-1 is always full of oldest data we have
 
 	// all start values can be found at data[min_idx-1]
+	// data[min_idx] will always be empty
 	// all end values can be found at data[max_idx]
 
 	// now fill in all gaps going forwards
