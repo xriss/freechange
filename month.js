@@ -18,13 +18,16 @@ exports.by_date=function(value,from_currency,to_currency,date)
 	
 	if(len>4) // 2000-01
 	{
-		ret=exchange_month.by_date(value,from_currency,to_currency,date)
+		ret=exchange_month.by_date(value,from_currency,to_currency,exchange_month.clamp_date(date))
 		if(ret!==undefined) { return ret }
 	}
 
-	date=exchange_year.clamp_date(date) // force into range 
-	
-	ret=exchange_year.by_date(value,from_currency,to_currency,date)
+	ret=exchange_year.by_date(value,from_currency,to_currency,exchange_year.clamp_date(date))
+	if(ret!==undefined) { return ret }
+
+	date=exchange_year.idx_to_date(exchange_year.min_idx-1) // finally deal with past values
+
+	ret=exchange_year.by_date(value,from_currency,to_currency,data)
 	if(ret!==undefined) { return ret }
 
 }

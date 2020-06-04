@@ -12,7 +12,11 @@ exports.date_to_idx=function(date)
 
 exports.idx_to_date=function(idx)
 {
-	return ""+(idx+1970)
+	let y=1970+idx
+	
+	let yyyy=""+y ; while(yyyy.length<4) { yyyy="0"+yyyy }
+
+	return yyyy
 }
 
 

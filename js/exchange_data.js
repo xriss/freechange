@@ -21,7 +21,7 @@ exports.build=function(base,rawdata)
 	}
 	delete rawdata
 
-	// first make sure all known currencies have a starting value
+	// get the starting value for all know currencies
 	let start={}
 	for( let idx=base.min_idx ; idx<=base.max_idx ; idx++ )
 	{
@@ -33,7 +33,10 @@ exports.build=function(base,rawdata)
 			}
 		}
 	}
-	base.data[base.min_idx]=start
+	base.data[base.min_idx-1]=start
+
+	// all start values can be found at data[min_idx-1]
+	// all end values can be found at data[max_idx]
 
 	// now fill in all gaps going forwards
 	for( let idx=base.min_idx+1 ; idx<=base.max_idx ; idx++ )
@@ -50,6 +53,7 @@ exports.build=function(base,rawdata)
 		base.data[idx]=it
 	}
 
+
 	base.by_date=function(value,from_currency,to_currency,date)
 	{
 		value=Number(value||0)||0
@@ -59,7 +63,7 @@ exports.build=function(base,rawdata)
 		let idx=base.date_to_idx(date)
 		if( idx < base.min_idx ) { return }
 		if( idx > base.max_idx ) { return }
-		let x=base.data[idx]	
+		let x=base.data[idx]
 		
 		let fx = x[from_currency]
 		let tx = x[to_currency  ]	

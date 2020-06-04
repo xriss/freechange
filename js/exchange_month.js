@@ -12,13 +12,13 @@ exports.date_to_idx=function(date)
 
 exports.idx_to_date=function(idx)
 {
-	let m=idx%12
-	let y=(idx-m)/12
+	let m=(idx%12)+1
+	let y=1970+Math.floor((idx)/12)
 	
-	let mmmm=""+m ; while(mmmm.length<4) { mmmm="0"+mmmm }
-	let   yy=""+y ; while(  yy.length<2) {   yy="0"+yy }
+	let yyyy=""+y ; while(yyyy.length<4) { yyyy="0"+yyyy }
+	let   mm=""+m ; while(  mm.length<2) {   mm="0"+mm }
 
-	return mmmm+"-"+yy
+	return yyyy+"-"+mm
 }
 
 require("./exchange_data.js").build(exports,require('../json/usd_to_xxx_by_month.json'))

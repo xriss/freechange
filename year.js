@@ -10,14 +10,15 @@ let exchange_year=require("./js/exchange_year.js")
 
 exports.by_date=function(value,from_currency,to_currency,date)
 {
-	let len=10
 	let ret
 	
-	if(typeof date=="string") { len=date.length } // length of date string
-	
-	date=exchange_year.clamp_date(date) // force into range 
-	
-	ret=exchange_year.by_date(value,from_currency,to_currency,date)
+	ret=exchange_year.by_date(value,from_currency,to_currency,exchange_year.clamp_date(date))
+	if(ret!==undefined) { return ret }
+
+	date=exchange_year.idx_to_date(exchange_year.min_idx-1) // finally deal with past values
+
+	ret=exchange_year.by_date(value,from_currency,to_currency,data)
 	if(ret!==undefined) { return ret }
 
 }
+
