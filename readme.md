@@ -39,8 +39,9 @@ data.
 
 If you want to reduce the amount of memory used by data then you can 
 reduce the maximum resolution from day to month or year by changing to 
-one of the following requires. This will allow you to explicitly choose 
-the resolution and reduce accuracy and size.
+one of the following requires. This allows you to explicitly choose the 
+resolutions available to reduce accuracy and more importantly data 
+size.
 
 
 	var freechange = require("freechange/day")
@@ -82,4 +83,14 @@ https://github.com/xriss/freechange/blob/master/mybutt/year.csv
 The mybutt folder in this repository contains handmade csv for when 
 every other source fails.
 
+
+All of these sources are combined into the following json files which 
+you could use directly outside of this module.
+
+
+https://github.com/xriss/freechange/blob/master/json/usd_to_xxx_by_day.json
+
+https://github.com/xriss/freechange/blob/master/json/usd_to_xxx_by_month.json
+
+https://github.com/xriss/freechange/blob/master/json/usd_to_xxx_by_year.json
 
