@@ -1,13 +1,14 @@
 // Copyright (c) 2020 Kriss Blank
 // Licensed under the MIT license whose full text can be found at http://opensource.org/licenses/MIT
 
-const moment = require("moment")
 
 exports.date_to_idx=function(date)
 {
+	const datePattern = /(\d{4})-(\d{2})/
+	const [, year, month ] = datePattern.exec(date)
+	let dat = new Date(Date.UTC(year,0,month))
 
-	let mm = moment(date)
-	return ((mm.year()-1970)*12)+mm.month()
+	return ((dat.getUTCFullYear()-1970)*12)+dat.getUTCMonth()
 }
 
 exports.idx_to_date=function(idx)

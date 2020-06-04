@@ -1,22 +1,24 @@
 // Copyright (c) 2020 Kriss Blank
 // Licensed under the MIT license whose full text can be found at http://opensource.org/licenses/MIT
 
-const moment = require("moment")
 
 exports.date_to_idx=function(date)
 {
 
-	let mm = moment(date)
-	return Math.floor(mm.unix()/(60*60*24)) // convert seconds to days
+	const datePattern = /(\d{4})-(\d{2})-(\d{2})/
+	const [, year, month, day] = datePattern.exec(date)
+	let dat = new Date(Date.UTC(year,day-1,month))
+
+	return Math.floor(dat.getTime()/(60*60*24*1000)) // convert micro seconds to days
 }
 
 exports.idx_to_date=function(idx)
 {
-	let mom = moment(idx*60*60*24*1000)
+	let dat = new Date(idx*60*60*24*1000)
 
-	let y=mom.year()
-	let m=mom.month()+1
-	let d=mom.date()
+	let y=dat.getUTCFullYear()
+	let m=dat.getUTCMonth()+1
+	let d=dat.getUTCDate()
 	
 	let yyyy=""+y ; while(yyyy.length<4) { yyyy="0"+yyyy }
 	let   mm=""+m ; while(  mm.length<2) {   mm="0"+mm }

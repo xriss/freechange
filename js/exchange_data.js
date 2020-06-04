@@ -70,7 +70,7 @@ exports.build=function(base,rawdata)
 		let fx = x[from_currency]
 		let tx = x[to_currency  ]	
 
-		if((fx!==undefined)&&(tx!=undefined)&&(fx!=0)&&(tx!=0)) // sanity
+		if( fx && tx ) // sanity numbers must exist and not be zero
 		{
 			return value*tx/fx
 		}
@@ -80,6 +80,7 @@ exports.build=function(base,rawdata)
 	base.clamp_date=function(date)
 	{
 		let idx=base.date_to_idx(date)
+console.log(date+" --> "+idx+" >= "+base.min_idx+" <= "+base.max_idx+" == "+base.idx_to_date(idx))
 		if( idx < base.min_idx ) { idx = base.min_idx }
 		if( idx > base.max_idx ) { idx = base.max_idx }
 		return base.idx_to_date(idx)
