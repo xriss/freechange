@@ -15,7 +15,6 @@
   "directories": {},
   "dependencies": {},
   "devDependencies": {
-    "moment": "^2.26.0",
     "entities": "^2.0.2",
     "json-stable-stringify": "^1.0.1",
     "minimist": "^1.2.5",

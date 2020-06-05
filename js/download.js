@@ -10,7 +10,6 @@ const ls=function(a) { console.log(util.inspect(a,{depth:null})) }
 
 const fetch          = require('node-fetch')
 const csvparse       = require('neat-csv')
-const moment         = require('moment')
 const json_stringify = require('json-stable-stringify')
 
 
@@ -84,9 +83,9 @@ for( let n in download.currency ) { download.currency[n].iso=n }
 
 download.all=async function()
 {
+	await download.imf()
 	await download.fred()
 	await download.oecd()
-	await download.imf()
 	
 	await download.usd_day()
 	await download.usd_month()
@@ -130,7 +129,18 @@ download.imf=async function()
 					for( let i=1 ; true ; i++ )
 					{
 						if( ! line[i] ) { break }
-						dates[i]=moment(line[i],"MMMM DD, YYYY").format("YYYY-MM-DD")
+
+						let dat=new Date(line[i]) // the format is the one javascript understands...
+						let y=dat.getFullYear()
+						let m=dat.getMonth()+1
+						let d=dat.getDate()
+						
+						let yyyy=""+y ; while(yyyy.length<4) { yyyy="0"+yyyy }
+						let   mm=""+m ; while(  mm.length<2) {   mm="0"+mm }
+						let   dd=""+d ; while(  dd.length<2) {   dd="0"+dd }
+
+						dates[i]=yyyy+"-"+mm+"-"+dd
+
 					}
 				}
 				else // try for a currency line
