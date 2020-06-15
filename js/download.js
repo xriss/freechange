@@ -12,6 +12,7 @@ const fetch          = require('node-fetch')
 const csvparse       = require('neat-csv')
 const json_stringify = require('json-stable-stringify')
 
+const xml = require("sax-parser")
 
 const jml = require('./jml.js')
 
@@ -83,6 +84,8 @@ for( let n in download.currency ) { download.currency[n].iso=n }
 
 download.all=async function()
 {
+	await download.names()
+
 	await download.imf()
 	await download.fred()
 	await download.oecd()
@@ -92,6 +95,62 @@ download.all=async function()
 	await download.usd_year()
 
 }
+
+
+download.names=async function()
+{
+
+	let url="https://www.currency-iso.org/dam/downloads/lists/list_one.xml"
+	let data = await fetch(url).then(res => res.text())
+
+//console.log(data)
+
+	var dump={}
+	
+	var mode=undefined
+	var it={}
+	var parser = new xml.SaxParser(function(cb) {
+		cb.onStartDocument(function() {});
+		cb.onEndDocument(function() {});
+		cb.onStartElementNS(function(elem, attrs, prefix, uri, namespaces) {
+			mode=elem
+			if(elem=="CcyNtry")
+			{
+				it={}
+			}
+		});
+		cb.onEndElementNS(function(elem, prefix, uri) {
+			mode=undefined
+			if(elem=="CcyNtry")
+			{
+				if(it.Ccy && it.CcyNm)
+				{
+					dump[it.Ccy]=it.CcyNm
+				}
+				it={}
+			}
+		});
+		cb.onCharacters(function(chars) {
+			if(mode)
+			{
+				it[mode]=chars
+				console.log(mode+" = "+chars);
+			}
+		});
+	});
+
+	parser.parseString(data)
+	
+	console.log(dump)
+
+	let filename=__dirname+"/../json/currency_names.json"
+	let old={}
+	try{ old=JSON.parse( fs.readFileSync(filename,{encoding:"utf8"}) ) }catch(e){}
+	for(let n in old){ if( (!dump[n]) ) { dump[n] = old[n] } } // include old data
+	fs.writeFileSync(filename,json_stringify(dump,{ space: ' ' })+"\n");
+
+}
+
 
 download.imf=async function()
 {
