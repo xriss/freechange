@@ -132,7 +132,6 @@ download.names=async function()
 			if(mode)
 			{
 				it[mode]=chars
-				console.log(mode+" = "+chars);
 			}
 		});
 	});
