@@ -11,7 +11,6 @@ very data heavy. See below for options to reduce this size.
 
 	var freechange = require("freechange")
 
-	console.log( freechange.by_date(100,"GBP","USD") )
 	console.log( freechange.by_date(100,"GBP","USD","2010") )
 	console.log( freechange.by_date(100,"GBP","USD","2010-01") )
 	console.log( freechange.by_date(100,"GBP","USD","2010-01-01") )
