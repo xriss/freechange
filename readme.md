@@ -1,6 +1,12 @@
 
 # FreeChange
 
+https://www.npmjs.com/package/freechange
+
+https://npm.runkit.com/freechange
+
+https://xriss.github.io/freechange-charts/
+
 
 	npm install freechange
 
