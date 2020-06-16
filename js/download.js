@@ -103,8 +103,6 @@ download.names=async function()
 	let url="https://www.currency-iso.org/dam/downloads/lists/list_one.xml"
 	let data = await fetch(url).then(res => res.text())
 
-//console.log(data)
-
 	var dump={}
 	
 	var mode=undefined
@@ -141,8 +139,6 @@ download.names=async function()
 
 	parser.parseString(data)
 	
-	console.log(dump)
-
 	let filename=__dirname+"/../json/currency_names.json"
 	let old={}
 	try{ old=JSON.parse( fs.readFileSync(filename,{encoding:"utf8"}) ) }catch(e){}
