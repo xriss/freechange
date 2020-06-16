@@ -99,45 +99,59 @@ download.all=async function()
 
 download.names=async function()
 {
+	
+	console.log("Downloading Currency Names")
 
-	let url="https://www.currency-iso.org/dam/downloads/lists/list_one.xml"
-	let data = await fetch(url).then(res => res.text())
+	let url1="https://www.currency-iso.org/dam/downloads/lists/list_one.xml" // active currencies
+	let data1 = await fetch(url1).then(res => res.text())
+
+	let url3="https://www.currency-iso.org/dam/downloads/lists/list_three.xml" // old currencies
+	let data3 = await fetch(url3).then(res => res.text())
+
+
 
 	var dump={}
 	
 	var mode=undefined
 	var it={}
-	var parser = new xml.SaxParser(function(cb) {
-		cb.onStartDocument(function() {});
-		cb.onEndDocument(function() {});
-		cb.onStartElementNS(function(elem, attrs, prefix, uri, namespaces) {
-			mode=elem
-			if(elem=="CcyNtry")
-			{
-				it={}
-			}
-		});
-		cb.onEndElementNS(function(elem, prefix, uri) {
-			mode=undefined
-			if(elem=="CcyNtry")
-			{
-				if(it.Ccy && it.CcyNm)
+	var parse=function(data)
+	{
+		var parser = new xml.SaxParser(function(cb) {
+			cb.onStartElementNS(function(elem, attrs, prefix, uri, namespaces) {
+				mode=elem
+				if((elem=="CcyNtry")||(elem=="HstrcCcyNtry"))
 				{
-					dump[it.Ccy]=it.CcyNm
+					it={}
 				}
-				it={}
-			}
+			});
+			cb.onEndElementNS(function(elem, prefix, uri) {
+				mode=undefined
+				if((elem=="CcyNtry")||(elem=="HstrcCcyNtry"))
+				{
+					if(it.Ccy && it.CcyNm)
+					{
+						dump[it.Ccy]=it.CcyNm
+					}
+					it={}
+				}
+			});
+			cb.onCharacters(function(chars) {
+				if(mode)
+				{
+					it[mode]=chars
+				}
+			});
+			cb.onError(function(msg) {
+				util.log('<ERROR>'+JSON.stringify(msg)+"</ERROR>");
+			});
 		});
-		cb.onCharacters(function(chars) {
-			if(mode)
-			{
-				it[mode]=chars
-			}
-		});
-	});
 
-	parser.parseString(data)
-	
+		parser.parseString(data)
+	}
+
+	parse(data1.trim())
+	parse(data3.trim())
+
 	let filename=__dirname+"/../json/currency_names.json"
 	let old={}
 	try{ old=JSON.parse( fs.readFileSync(filename,{encoding:"utf8"}) ) }catch(e){}
