@@ -25,24 +25,21 @@ very data heavy. See below for options to reduce this size.
 This will exchange 100 GBP to USD multiple times, using slightly 
 different dates.
 
+Remember, we have a focus on historical data so this call may give 
+different results when ussed with a date less than a year old depending 
+on when you installed the package and when we last updated the package 
+with newer data. This happens as new data is collected overtime.
+
 The currencies given are three letter ISO-4217 codes 
 
 https://en.wikipedia.org/wiki/ISO_4217
 
-The list of currencies we support well can be found at the top of this 
-source file 
-https://github.com/xriss/freechange/blob/master/js/download.js where 
-downloads.currencies is a data mapping table used to parse and convert 
-the downloaded data. The list of currencies we support badly and the 
-data we use as last resort can be found at 
-https://github.com/xriss/freechange/blob/master/mybutt/year.csv
+The list of currencies we support and how well we support each and over 
+which periods of time and to what resolution can be found by visiting 
+https://xriss.github.io/freechange-charts/ and selecting from USD to 
+your currency of choice. The monthly chart represents good coverage so 
+if that is missing then we do not support that currency very well.
 
-
-Without a date, we use todays date ( we let the moment module parse the 
-date string ) which will be a bit wobbly and not provide good results. 
-We have a focus on historical data which is included in the library so 
-this call will give different results depending on when you installed the 
-package and when we last updated the package with newer data.
 
 So to recap, times in the past are good and stable, times in the future 
 are not and if you mostly care about todays exchange rates then you 
