@@ -27,7 +27,7 @@ exports.by_date=function(value,from_currency,to_currency,date)
 
 	date=exchange_year.idx_to_date(exchange_year.min_idx-1) // finally deal with past values
 
-	ret=exchange_year.by_date(value,from_currency,to_currency,data)
+	ret=exchange_year.by_date(value,from_currency,to_currency,date)
 	if(ret!==undefined) { return ret }
 
 }

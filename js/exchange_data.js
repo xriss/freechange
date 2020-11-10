@@ -80,7 +80,6 @@ exports.build=function(base,rawdata)
 	base.clamp_date=function(date)
 	{
 		let idx=base.date_to_idx(date)
-console.log(date+" --> "+idx+" >= "+base.min_idx+" <= "+base.max_idx+" == "+base.idx_to_date(idx))
 		if( idx < base.min_idx ) { idx = base.min_idx }
 		if( idx > base.max_idx ) { idx = base.max_idx }
 		return base.idx_to_date(idx)
