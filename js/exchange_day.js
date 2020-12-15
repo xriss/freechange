@@ -4,11 +4,19 @@
 
 exports.date_to_idx=function(date)
 {
-
-	const datePattern = /(\d{4})-(\d{2})-(\d{2})/
-	const [, year, month, day] = datePattern.exec(date)
-	let dat = new Date(Date.UTC(year,day-1,month))
-
+	let dat
+	if(date)
+	{
+		try{
+			const datePattern = /(\d{4})-(\d{2})-(\d{2})/
+			const [, year, month, day] = datePattern.exec(date)
+			dat = new Date(Date.UTC(year,day-1,month))
+		}catch(e){}
+	}
+	if(dat===undefined)
+	{
+		dat=new Date()
+	}
 	return Math.floor(dat.getTime()/(60*60*24*1000)) // convert micro seconds to days
 }
 

@@ -4,9 +4,19 @@
 
 exports.date_to_idx=function(date)
 {
-	const datePattern = /(\d{4})/
-	const [, year ] = datePattern.exec(date)
-	let dat = new Date(Date.UTC(year,0,1))
+	let dat
+	if(date)
+	{
+		try{
+			const datePattern = /(\d{4})/
+			const [, year ] = datePattern.exec(date)
+			dat = new Date(Date.UTC(year,0,1))
+		}catch(e){}
+	}
+	if(dat===undefined)
+	{
+		dat=new Date()
+	}
 
 	return (dat.getUTCFullYear()-1970)
 }
