@@ -17,6 +17,7 @@ const xml = require("sax-parser")
 const jml = require('./jml.js')
 
 
+var parseDumber=function(s) { return parseFloat( (s||"").split(",").join("") ); }
 
 download.currency=
 {
@@ -220,7 +221,7 @@ download.imf=async function()
 						{
 							if( ! line[i] ) { break }
 							let date=dates[i]
-							let value=parseFloat(line[i])
+							let value=parseDumber(line[i])
 							if( !isNaN(value) )
 							{
 								if(!dump[date]){dump[date]={}} // init
@@ -274,7 +275,7 @@ download.oecd=async function()
 					else
 					if(path=="/message:MessageGroup/DataSet/Series/Obs/ObsValue")
 					{
-						let value=parseFloat(it.value)
+						let value=parseDumber(it.value)
 
 						if( !isNaN(value) )
 						{
@@ -318,7 +319,7 @@ download.fred=async function()
 			for( line of lines )
 			{
 				let date  = line.DATE
-				let value = parseFloat(line["DEX"+cid])
+				let value = parseDumber(line["DEX"+cid])
 				if( !isNaN(value) )
 				{
 					if(!dump[date]){dump[date]={}} // init
