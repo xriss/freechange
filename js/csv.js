@@ -7,7 +7,7 @@ const fs=require('fs')
 const util=require('util')
 const ls=function(a) { console.log(util.inspect(a,{depth:null})) }
 
-csv.all=function()
+csv.all=async function()
 {
 	
 	csv.writefile( "usd_to_xxx_by_day" , JSON.parse( fs.readFileSync(__dirname+"/../json/usd_to_xxx_by_day.json",{encoding:"utf8"}) ) )
