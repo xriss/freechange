@@ -124,3 +124,14 @@ https://github.com/xriss/freechange/blob/master/json/usd_to_xxx_by_month.json
 
 https://github.com/xriss/freechange/blob/master/json/usd_to_xxx_by_year.json
 
+
+These CSV files are also built at the same time as the json files and will
+contain the same data.
+
+
+https://github.com/xriss/freechange/blob/master/csv/usd_to_xxx_by_day.csv
+
+https://github.com/xriss/freechange/blob/master/csv/usd_to_xxx_by_month.csv
+
+https://github.com/xriss/freechange/blob/master/csv/usd_to_xxx_by_year.csv
+
