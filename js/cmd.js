@@ -18,6 +18,7 @@ cmd.run=async function(argv)
 	if( argv._[0]=="download" )
 	{
 		await require("./download.js").all()
+		await require("./csv.js").all()
 		return
 	}
 	if( argv._[0]=="exchange" )
