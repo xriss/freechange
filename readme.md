@@ -97,6 +97,13 @@ from https://fred.stlouisfed.org/categories/94
 to https://github.com/xriss/freechange/blob/master/json/fred.json
 
 
+### CodeForIATI : Daily
+
+from https://raw.githubusercontent.com/codeforIATI/imf-exchangerates/gh-pages/imf_exchangerates.csv
+
+to https://github.com/xriss/freechange/blob/master/json/cfiati.json
+
+
 ### OECD : Monthly
 
 from https://data.oecd.org/conversion/exchange-rates.htm
