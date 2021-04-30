@@ -85,6 +85,8 @@ for( let n in download.currency ) { download.currency[n].iso=n }
 
 download.all=async function()
 {
+	await download.cfiati()
+
 	await download.names()
 
 	await download.imf()
@@ -96,6 +98,47 @@ download.all=async function()
 	await download.usd_year()
 
 }
+
+
+download.cfiati=async function()
+{
+
+	console.log("Downloading CFIATI base data")
+
+	let url="https://raw.githubusercontent.com/codeforIATI/imf-exchangerates/gh-pages/imf_exchangerates.csv"
+	let data = await fetch(url).then(res => res.text())
+	let lines = await csvparse( data , { separator: ',' } )
+
+
+	let dump={}
+
+	for( line of lines )
+	{
+		if( line[0] == "Date" ) // this is a header line
+		{
+		}
+		else
+		{
+			let date=line.Date
+			let value=parseDumber(line.Rate)
+			var cid=(line.Currency||"").toUpperCase()
+			if( !isNaN(value) && cid )
+			{
+				if(!dump[date]){dump[date]={}} // init
+				dump[date][cid]=value
+			}
+		}
+	}
+
+
+	let filename=__dirname+"/../json/cfiati.json"
+	let old={}
+	try{ old=JSON.parse( fs.readFileSync(filename,{encoding:"utf8"}) ) }catch(e){}
+	for(let n in old){ if( (!dump[n]) ) { dump[n] = old[n] } } // include old data
+	fs.writeFileSync(filename,json_stringify(dump,{ space: ' ' })+"\n");
+
+}
+
 
 
 download.names=async function()
@@ -341,6 +384,9 @@ download.fred=async function()
 
 download.usd_day=async function()
 {
+	let cfiati={}
+	try{ cfiati=JSON.parse( fs.readFileSync(__dirname+"/../json/cfiati.json",{encoding:"utf8"}) ) }catch(e){}
+
 	let fred={}
 	try{ fred=JSON.parse( fs.readFileSync(__dirname+"/../json/fred.json",{encoding:"utf8"}) ) }catch(e){}
 
@@ -348,6 +394,17 @@ download.usd_day=async function()
 	try{ imf=JSON.parse( fs.readFileSync(__dirname+"/../json/imf.json",{encoding:"utf8"}) ) }catch(e){}
 
 	let dump={}
+
+// start with code for iati base data, which will be replaced by any other data we have
+	for( let date in cfiati )
+	{
+		let it=cfiati[date]
+		for( let n in it )
+		{
+			if(!dump[date]){dump[date]={}}
+			dump[date][n]=it[n]
+		}
+	}
 
 	let fred_currency={} // map fred id
 	for( let n in download.currency )
