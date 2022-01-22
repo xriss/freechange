@@ -19,7 +19,7 @@
     "json-stable-stringify": "^1.0.1",
     "minimist": "^1.2.5",
     "neat-csv": "^5.2.0",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^3.1.1",
     "sax": "^1.2.4",
     "sax-parser": "^2.0.1"
   }
