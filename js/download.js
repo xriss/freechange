@@ -93,8 +93,8 @@ download.all=async function()
 
 	await download.names()
 
-//	await download.imf()
-//	await download.fred()
+	await download.imf()
+	await download.fred()
 	await download.oecd()
 	
 	await download.usd_day()
