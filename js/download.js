@@ -10,8 +10,8 @@ const ls=function(a) { console.log(util.inspect(a,{depth:null})) }
 
 const fetch = require('node-fetch')
 const https = require('https');
-const httpsAgent = new https.Agent({ rejectUnauthorized: false, secureProtocol:"TLS_method", secureOptions:262144 });
-const sslhax = {agent:httpsAgent}
+const httpsAgent = new https.Agent({ /* rejectUnauthorized: false, secureProtocol:"TLS_method", */ secureOptions:262144 });
+const sslhax = function(){ return { agent:httpsAgent, signal:AbortSignal.timeout(60000), } }
     
 const csvparse       = require('neat-csv')
 const json_stringify = require('json-stable-stringify')
@@ -110,7 +110,7 @@ download.cfiati=async function()
 	console.log("Downloading CFIATI base data")
 
 	let url="https://raw.githubusercontent.com/codeforIATI/imf-exchangerates/gh-pages/imf_exchangerates.csv"
-	let data = await fetch(url,sslhax).then(res => res.text())
+	let data = await fetch(url,sslhax()).then(res => res.text())
 	let lines = await csvparse( data , { separator: ',' } )
 
 
@@ -151,10 +151,10 @@ download.names=async function()
 	console.log("Downloading Currency Names")
 
 	let url1="https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-one.xml" // active currencies
-	let data1 = await fetch(url1,sslhax).then(res => res.text())
+	let data1 = await fetch(url1,sslhax()).then(res => res.text())
 
 	let url3="https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-three.xml" // old currencies
-	let data3 = await fetch(url3,sslhax).then(res => res.text())
+	let data3 = await fetch(url3,sslhax()).then(res => res.text())
 
 
 
@@ -234,7 +234,7 @@ download.imf=async function()
 			console.log("Downloading Daily IMF data for "+year+"-"+month0)
 
 			let url="https://www.imf.org/external/np/fin/data/rms_mth.aspx?SelectDate="+year+"-"+month0+"-01&reportType=CVSDR&tsvflag=Y"
-			let data = await fetch(url,sslhax).then(res => res.text())
+			let data = await fetch(url,sslhax()).then(res => res.text())
 			let lines = await csvparse( data , { separator: '\t' } )
 
 			let dates=[]
@@ -305,9 +305,10 @@ download.oecd=async function()
 			console.log("Downloading Monthly OECD data for "+cid)
 			
 			let url="https://stats.oecd.org/restsdmx/sdmx.ashx/GetData/MEI_FIN/CCUS."+cid+".M/all?startTime=1940-01"
-			let data = await fetch(url,sslhax).then(res => res.text())
+			let data
+			try{ data = await fetch(url,sslhax()).then(res => res.text()) }catch(e){ console.log(e) } // ignore download errors
 			let tree
-			try{ tree=jml.from_xml(data) }catch(e){}
+			try{ tree=jml.from_xml(data) }catch(e){ console.log(e) } // ignore parse errors
 
 			if(tree)
 			{
@@ -340,7 +341,16 @@ download.oecd=async function()
 	let filename=__dirname+"/../json/oecd.json"
 	let old={}
 	try{ old=JSON.parse( fs.readFileSync(filename,{encoding:"utf8"}) ) }catch(e){}
-	for(let n in old){ if( (!dump[n]) ) { dump[n] = old[n] } } // include old data
+	for(let n in old){  // include old data
+		if( (!dump[n]) ) { dump[n] = old[n] }
+		else // maybe partial download fail
+		{
+			for(let a in old[n] ) // check each part
+			{
+				if( (!dump[n][a]) ) { dump[n][a] = old[n][a] }
+			}
+		}
+	}
 	fs.writeFileSync(filename,json_stringify(dump,{ space: ' ' })+"\n");
 
 }
@@ -360,7 +370,7 @@ download.fred=async function()
 			console.log("Downloading Daily FRED data for "+cid)
 			
 			let url="https://fred.stlouisfed.org/graph/fredgraph.csv?id=DEX"+cid
-			let data = await fetch(url,sslhax).then(res => res.text())
+			let data = await fetch(url,sslhax()).then(res => res.text())
 			let lines = await csvparse( data )
 
 			for( line of lines )
