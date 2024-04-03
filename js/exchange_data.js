@@ -19,7 +19,6 @@ exports.build=function(base,rawdata)
 		if(idx<base.min_idx) { base.min_idx=idx }
 		if(idx>base.max_idx) { base.max_idx=idx }
 	}
-	delete rawdata
 
 	// get the starting value for all know currencies
 	let start={}
