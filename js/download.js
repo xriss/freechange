@@ -12,7 +12,7 @@ const fetch = require('node-fetch')
 const https = require('https');
 const httpsAgent = new https.Agent({ /* rejectUnauthorized: false, secureProtocol:"TLS_method", */ secureOptions:262144 });
 const sslhax = function(){ return { agent:httpsAgent, signal:AbortSignal.timeout(60000), } }
-    
+
 const csvparse       = require('neat-csv')
 const json_stringify = require('json-stable-stringify')
 
@@ -96,7 +96,7 @@ download.all=async function()
 	await download.imf()
 	await download.fred()
 	await download.oecd()
-	
+
 	await download.usd_day()
 	await download.usd_month()
 	await download.usd_year()
@@ -147,7 +147,7 @@ download.cfiati=async function()
 
 download.names=async function()
 {
-	
+
 	console.log("Downloading Currency Names")
 
 	let url1="https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-one.xml" // active currencies
@@ -159,7 +159,7 @@ download.names=async function()
 
 
 	var dump={}
-	
+
 	var mode=undefined
 	var it={}
 	var parse=function(data)
@@ -230,7 +230,7 @@ download.imf=async function()
 		for(let month=1;month<=12;month++ )
 		{
 			let month0="0"+month; if(month0.length>2) { month0=month; }
-			
+
 			console.log("Downloading Daily IMF data for "+year+"-"+month0)
 
 			let url="https://www.imf.org/external/np/fin/data/rms_mth.aspx?SelectDate="+year+"-"+month0+"-01&reportType=CVSDR&tsvflag=Y"
@@ -250,7 +250,7 @@ download.imf=async function()
 						let y=dat.getFullYear()
 						let m=dat.getMonth()+1
 						let d=dat.getDate()
-						
+
 						let yyyy=""+y ; while(yyyy.length<4) { yyyy="0"+yyyy }
 						let   mm=""+m ; while(  mm.length<2) {   mm="0"+mm }
 						let   dd=""+d ; while(  dd.length<2) {   dd="0"+dd }
@@ -280,13 +280,13 @@ download.imf=async function()
 			}
 		}
 	}
-	
+
 	let filename=__dirname+"/../json/imf.json"
 	let old={}
 	try{ old=JSON.parse( fs.readFileSync(filename,{encoding:"utf8"}) ) }catch(e){}
 	for(let n in old){ if( (!dump[n]) ) { dump[n] = old[n] } } // include old data
 	fs.writeFileSync(filename,json_stringify(dump,{ space: ' ' })+"\n");
-	
+
 }
 
 
@@ -303,7 +303,7 @@ download.oecd=async function()
 		{
 
 			console.log("Downloading Monthly OECD data for "+cid)
-			
+
 			let url="https://stats.oecd.org/restsdmx/sdmx.ashx/GetData/MEI_FIN/CCUS."+cid+".M/all?startTime=1940-01"
 			let data
 			try{ data = await fetch(url,sslhax()).then(res => res.text()) }catch(e){ console.log(e) } // ignore download errors
@@ -313,7 +313,7 @@ download.oecd=async function()
 			if(tree)
 			{
 
-				let date="0000-00"		
+				let date="0000-00"
 				jml.walk_xpath(tree,function(it,path){
 
 					if(path=="/message:MessageGroup/DataSet/Series/Obs/Time")
@@ -368,7 +368,7 @@ download.fred=async function()
 		{
 
 			console.log("Downloading Daily FRED data for "+cid)
-			
+
 			let url="https://fred.stlouisfed.org/graph/fredgraph.csv?id=DEX"+cid
 			let data = await fetch(url,sslhax()).then(res => res.text())
 			let lines = await csvparse( data )
@@ -429,7 +429,7 @@ download.usd_day=async function()
 			fred_currency[v.fred]=v
 		}
 	}
-	
+
 	for( let date in fred )
 	{
 		let it=fred[date]
@@ -496,7 +496,7 @@ download.usd_month=async function()
 			oecd_currency[v.oecd]=v
 		}
 	}
-	
+
 	for( let date in oecd )
 	{
 		let it=oecd[date]
@@ -585,7 +585,7 @@ download.usd_year=async function()
 	}
 
 
-	let data = fs.readFileSync(__dirname+"/../mybutt/year.csv",{encoding:"utf8"})
+	let data = fs.readFileSync(__dirname+"/../failsafe/year.csv",{encoding:"utf8"})
 	let lines = await csvparse( data )
 	for( let line of lines )
 	{
