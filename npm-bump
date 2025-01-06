@@ -29,9 +29,9 @@ fi
 V=$V1.$V2.$V3
 npm version --no-git-tag-version $V
 
-#dangerous git junk
+#dangerous git junk?
 #add git version tag
-git add ..
-git commit -mv$V1.$V2.$V3
-git tag v$V1.$V2.$V3
-git push origin --tags
+#git add ..
+#git commit -mv$V1.$V2.$V3
+#git tag v$V1.$V2.$V3
+#git push origin --tags
