@@ -15,12 +15,12 @@
   "directories": {},
   "dependencies": {},
   "devDependencies": {
-    "entities": "^2.0.2",
-    "json-stable-stringify": "^1.0.1",
-    "minimist": "^1.2.5",
-    "neat-csv": "^5.2.0",
-    "node-fetch": "^2.6.1",
-    "sax": "^1.2.4",
-    "sax-parser": "^2.0.1"
+    "entities": "^6.0.0",
+    "json-stable-stringify": "^1.2.1",
+    "minimist": "^1.2.8",
+    "neat-csv": "^7.0.0",
+    "node-fetch": "^3.3.2",
+    "sax": "^1.4.1",
+    "sax-parser": "^2.0.3"
   }
 }
