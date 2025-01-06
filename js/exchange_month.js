@@ -10,7 +10,7 @@ exports.date_to_idx=function(date)
 		try{
 			const datePattern = /(\d{4})-(\d{2})/
 			const [, year, month ] = datePattern.exec(date)
-			dat = new Date(Date.UTC(year,0,month))
+			dat = new Date(Date.UTC(year,month-1,1))
 		}catch(e){}
 	}
 	if(dat===undefined)
@@ -25,7 +25,7 @@ exports.idx_to_date=function(idx)
 {
 	let m=(idx%12)+1
 	let y=1970+Math.floor((idx)/12)
-	
+
 	let yyyy=""+y ; while(yyyy.length<4) { yyyy="0"+yyyy }
 	let   mm=""+m ; while(  mm.length<2) {   mm="0"+mm }
 

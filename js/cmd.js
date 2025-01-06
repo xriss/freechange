@@ -34,12 +34,12 @@ cmd.run=async function(argv)
 `
 >	freechange download
 
-Fetch remote files and update cached data this should be run daily to 
+Fetch remote files and update cached data this should be run daily to
 keep the json files uptodate.
 
 >	freechange exchange 1.0 GBP USD 2000-01-01
 
-Exchange from first currency into second using rates at given date. If 
+Exchange from first currency into second using rates at given date. If
 ommited the date will default to today and the cuurencies to USD.
 
 `)

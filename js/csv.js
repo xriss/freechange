@@ -9,7 +9,7 @@ const ls=function(a) { console.log(util.inspect(a,{depth:null})) }
 
 csv.all=async function()
 {
-	
+
 	csv.writefile( "usd_to_xxx_by_day" , JSON.parse( fs.readFileSync(__dirname+"/../json/usd_to_xxx_by_day.json",{encoding:"utf8"}) ) )
 
 	csv.writefile( "usd_to_xxx_by_month" , JSON.parse( fs.readFileSync(__dirname+"/../json/usd_to_xxx_by_month.json",{encoding:"utf8"}) ) )
@@ -28,7 +28,7 @@ csv.writefile=function(name,data)
 	let fp=fs.openSync(filename,"w")
 
 	let names_used={}
-	
+
 	for( let date in data)
 	{
 		let row=data[date]
@@ -70,7 +70,7 @@ csv.writefile=function(name,data)
 				c=c+1
 			}
 		}
-		
+
 		fs.writeSync(fp,s+"\n");
 	}
 

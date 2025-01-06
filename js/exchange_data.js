@@ -12,7 +12,7 @@ exports.build=function(base,rawdata)
 	for( const date in rawdata )
 	{
 		let idx=base.date_to_idx(date)
-		
+
 		let it=rawdata[date]
 
 		base.data[idx]=it
@@ -67,13 +67,13 @@ exports.build=function(base,rawdata)
 		if( !x ) { return }
 
 		let fx = x[from_currency]
-		let tx = x[to_currency  ]	
+		let tx = x[to_currency  ]
 
 		if( fx && tx ) // sanity numbers must exist and not be zero
 		{
 			return value*tx/fx
 		}
-		
+
 	}
 
 	base.clamp_date=function(date)

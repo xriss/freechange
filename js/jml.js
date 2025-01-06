@@ -69,7 +69,7 @@ jml.from_xml=function(data)
 	parser.write(data);
 
 	return stack[0] && stack[0][1] && stack[0][1][0];
-	
+
 }
 
 // turn json back into xml
@@ -79,7 +79,7 @@ jml.to_xml=function(tree)
 	{
 		tree=JSON.parse(tree);
 	}
-	
+
 	var ss=[];
 
 	if(!tree){ return; }
@@ -127,7 +127,7 @@ jml.to_xml=function(tree)
 	};
 	if(tree.forEach) { tree.forEach(function(it){return f(it,"")}); }
 	else { f(tree,""); }
-	
+
 	return ss.join("");
 }
 
@@ -192,7 +192,7 @@ jml.find_child=function(tree,name)
 jml.manifest_xpath=function(tree,path)
 {
 	if(path=="") { return tree }
-	
+
 	let aa=path.split("/") // path must begin with a / and not contain any @
 	let ret=tree
 	for( let i=1 ; i<aa.length ; i++) // find or create
