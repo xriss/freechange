@@ -13,13 +13,14 @@
     "freechange": "js/cmd.js"
   },
   "directories": {},
-  "dependencies": {},
+  "dependencies": {
+    "csv-parser": "^3.2.0"
+  },
   "devDependencies": {
     "entities": "^6.0.0",
     "json-stable-stringify": "^1.2.1",
     "minimist": "^1.2.8",
-    "neat-csv": "^7.0.0",
-    "node-fetch": "^3.3.2",
+    "node-fetch-cjs": "^3.3.2",
     "sax": "^1.4.1",
     "sax-parser": "^2.0.3"
   }

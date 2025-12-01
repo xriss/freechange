@@ -8,18 +8,35 @@ const util=require('util')
 const ls=function(a) { console.log(util.inspect(a,{depth:null})) }
 
 
-const fetch = require('node-fetch')
+const { default: fetch } = require('node-fetch-cjs')
 const https = require('https');
 const httpsAgent = new https.Agent({ /* rejectUnauthorized: false, secureProtocol:"TLS_method", */ secureOptions:262144 });
 const sslhax = function(){ return { agent:httpsAgent, signal:AbortSignal.timeout(60000), } }
 
-const csvparse       = require('neat-csv')
+const csvparser      = require('csv-parser')
 const json_stringify = require('json-stable-stringify')
 
 const xml = require("sax-parser")
 
 const jml = require('./jml.js')
 
+const csvparse=async function(data,opts)
+{
+	const Readable = require('stream').Readable
+	return new Promise(function(resolve, reject){
+		let r=[]
+		let s = new Readable()
+		s.push(data)
+		s.push(null)
+		s.pipe(csvparser(opts))
+		.on('data', function(l){
+			r.push(l)
+		})
+		.on('end',function(){
+			resolve(r)
+		})
+	})
+}
 
 var parseDumber=function(s) { return parseFloat( (s||"").split(",").join("") ); }
 
@@ -293,12 +310,29 @@ download.imf=async function()
 
 download.oecd=async function()
 {
-
-	let dump={}
+	// we hit api limits so, uhm, randomise the access, eventually we will probably get all the data, maybe
+	rando=[]
 	for( let n in download.currency )
 	{
-		let v=download.currency[n]
+		rando.push({ n:n , v:download.currency[n] })
+	}
+	function shuffleArray(array) {
+		for (var i = array.length - 1; i > 0; i--) {
+			var j = Math.floor(Math.random() * (i + 1));
+			var temp = array[i];
+			array[i] = array[j];
+			array[j] = temp;
+		}
+	}
+	shuffleArray(rando)
+
+	let dump={}
+	for( let r of rando )
+	{
+		let n=r.n
+		let v=r.v
 		let cid=v.oecd
+		let giveup=false
 		if(cid)
 		{
 
@@ -306,9 +340,27 @@ download.oecd=async function()
 
 			let url="https://stats.oecd.org/restsdmx/sdmx.ashx/GetData/MEI_FIN/CCUS."+cid+".M/all?startTime=1940-01"
 			let data
-			try{ data = await fetch(url,sslhax()).then(res => res.text()) }catch(e){ console.log(e) } // ignore download errors
+			for(let t=1;t<128;t++)
+			{
+				try{ data = await fetch(url,sslhax()).then(res => res.text()) }catch(e){ console.log(e) } // ignore download errors
+				if( data && data.includes("exceeded the number of requests") )
+				{
+					console.log(data)
+					data=null
+					giveup=true
+					break
+//					console.log("waiting and trying again...")
+//					await new Promise(res => setTimeout(res, 60000));
+				}
+				else
+				{
+					break
+				}
+			}
+			if(giveup){break}
+			
 			let tree
-			try{ tree=jml.from_xml(data) }catch(e){ console.log(e) } // ignore parse errors
+			try{ tree=jml.from_xml(data) }catch(e){ console.log(data) ; console.log(e) } // ignore parse errors
 
 			if(tree)
 			{

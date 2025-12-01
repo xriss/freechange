@@ -266,6 +266,7 @@
  "VND": "Dong",
  "VUV": "Vatu",
  "WST": "Tala",
+ "XAD": "Arab Accounting Dinar",
  "XAF": "CFA Franc BEAC",
  "XAG": "Silver",
  "XAU": "Gold",
@@ -274,6 +275,7 @@
  "XBC": "Bond Markets Unit European Unit of Account 9 (E.U.A.-9)",
  "XBD": "Bond Markets Unit European Unit of Account 17 (E.U.A.-17)",
  "XCD": "East Caribbean Dollar",
+ "XCG": "Caribbean Guilder",
  "XDR": "SDR (Special Drawing Right)",
  "XEU": "European Currency Unit (E.C.U)",
  "XFO": "Gold-Franc",
@@ -301,7 +303,7 @@
  "ZWC": "Rhodesian Dollar",
  "ZWD": "Zimbabwe Dollar",
  "ZWG": "Zimbabwe Gold",
- "ZWL": "Zimbabwe Dollar",
+ "ZWL": "Zimbabwe Dollar",
  "ZWN": "Zimbabwe Dollar (new)",
  "ZWR": "Zimbabwe Dollar"
 }
