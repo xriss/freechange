@@ -112,7 +112,7 @@ download.all=async function()
 
 	await download.imf()
 	await download.fred()
-	await download.oecd()
+//	await download.oecd()
 
 	await download.usd_day()
 	await download.usd_month()
@@ -252,7 +252,7 @@ download.imf=async function()
 
 			let url="https://www.imf.org/external/np/fin/data/rms_mth.aspx?SelectDate="+year+"-"+month0+"-01&reportType=CVSDR&tsvflag=Y"
 			let data = await fetch(url,sslhax()).then(res => res.text())
-			let lines = await csvparse( data , { separator: '\t' } )
+			let lines = await csvparse( data , { separator: '\t' , headers: false } )
 
 			let dates=[]
 			for( line of lines )
@@ -290,6 +290,7 @@ download.imf=async function()
 							{
 								if(!dump[date]){dump[date]={}} // init
 								dump[date][cid]=value
+//console.log(cid,date,value)
 							}
 						}
 					}
@@ -364,27 +365,69 @@ download.oecd=async function()
 
 			if(tree)
 			{
-
 				let date="0000-00"
+				let measure="unknown"
+				let unit="unknown"
+				let area="unknown"
 				jml.walk_xpath(tree,function(it,path){
 
-					if(path=="/message:MessageGroup/DataSet/Series/Obs/Time")
+/*
+					if(path=="/message:GenericData/message:DataSet/generic:Obs/generic:Attributes")
 					{
-						date=it[1][0]
+						console.log(path,it)
+					}
+					if(path=="/message:GenericData/message:DataSet/generic:Obs/generic:ObsKey")
+					{
+						console.log(path,it)
+					}
+					if(path=="/message:GenericData/message:DataSet/generic:Obs/generic:ObsValue")
+					{
+						console.log(path,it)
+					}
+*/
+
+					if(path=="/message:GenericData/message:DataSet/generic:Obs/generic:ObsKey/generic:Value")
+					{
+						if( it.id=="TIME_PERIOD" )
+						{
+							date=it.value
+						}
+						else
+						if( it.id=="MEASURE" )
+						{
+							measure=it.value
+						}
+						else
+						if( it.id=="UNIT_MEASURE" )
+						{
+							unit=it.value
+						}
+						else
+						if( it.id=="REF_AREA" )
+						{
+							area=it.value
+						}
 					}
 					else
-					if(path=="/message:MessageGroup/DataSet/Series/Obs/ObsValue")
+					if(path=="/message:GenericData/message:DataSet/generic:Obs/generic:ObsValue")
 					{
 						let value=parseDumber(it.value)
 
 						if( !isNaN(value) )
 						{
-							if(!dump[date]){dump[date]={}} // init
-							dump[date][cid]=value
+//							if( ( measure == "CC" ) && ( unit == "XDC_USD" ) && ( area == "USA" ) )
+//							if( ( area == "USA" ) )
+							{
+//								if(!dump[date]){dump[date]={}} // init
+// looks like garbage
+//								dump[date][cid]=value
+console.log(cid,date,value,measure,unit,area)
+							}
 						}
 					}
 
 				})
+break
 			}
 
 		}
@@ -427,12 +470,13 @@ download.fred=async function()
 
 			for( line of lines )
 			{
-				let date  = line.DATE
+				let date  = line.observation_date
 				let value = parseDumber(line["DEX"+cid])
 				if( !isNaN(value) )
 				{
 					if(!dump[date]){dump[date]={}} // init
 					dump[date][cid]=value
+//console.log(cid,date,value)
 				}
 			}
 		}
@@ -519,6 +563,7 @@ download.usd_day=async function()
 		dump[date].USD=1 // USD always converts to 1
 	}
 
+console.log("updating usd_to_xxx_by_day")
 
 	let filename=__dirname+"/../json/usd_to_xxx_by_day.json"
 	let old={}
@@ -551,12 +596,15 @@ download.usd_month=async function()
 
 	for( let date in oecd )
 	{
-		let it=oecd[date]
-		for( let n in it )
+		if( /^\d+\-\d+$/.test(date) )
 		{
-			let c=oecd_currency[n]
-			if(!dump[date]){dump[date]={}}
-			dump[date][c.iso]=it[n]
+			let it=oecd[date]
+			for( let n in it )
+			{
+				let c=oecd_currency[n]
+				if(!dump[date]){dump[date]={}}
+				dump[date][c.iso]=it[n]
+			}
 		}
 	}
 
@@ -590,6 +638,8 @@ download.usd_month=async function()
 		dump[date].USD=1 // USD always converts to 1
 	}
 
+
+console.log("updating usd_to_xxx_by_month")
 
 	let filename=__dirname+"/../json/usd_to_xxx_by_month.json"
 	let old={}
@@ -660,6 +710,8 @@ download.usd_year=async function()
 	}
 
 
+
+console.log("updating usd_to_xxx_by_year")
 
 	let filename=__dirname+"/../json/usd_to_xxx_by_year.json"
 	let old={}
