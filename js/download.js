@@ -485,7 +485,16 @@ download.fred=async function()
 	let filename=__dirname+"/../json/fred.json"
 	let old={}
 	try{ old=JSON.parse( fs.readFileSync(filename,{encoding:"utf8"}) ) }catch(e){}
-	for(let n in old){ if( (!dump[n]) ) { dump[n] = old[n] } } // include old data
+	for(let n in old){
+		if( (!dump[n]) ) { dump[n] = old[n] } // include old full data
+		for( let na in old[n] )
+		{
+			if( !dump[n][na] )
+			{
+				dump[n][na]=old[n][na] // include partial data
+			}
+		}
+	}
 	fs.writeFileSync(filename,json_stringify(dump,{ space: ' ' })+"\n");
 
 
