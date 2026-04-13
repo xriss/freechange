@@ -53,7 +53,7 @@ download.currency=
 	"EUR":{ imf:"Euro",                oecd:"EA19", fred:"USEU", },
 	"JPY":{ imf:"Japanese yen",        oecd:"JPN",  fred:"JPUS", },
 	"GBP":{ imf:"U.K. pound",          oecd:"GBR",  fred:"USUK", },
-	"USD":{ imf:"U.S. dollar",                                   },
+	"USD":{ imf:"U.S. dollar",         oecd:"USA",               },
 	"DZD":{ imf:"Algerian dinar",                                },
 	"AUD":{ imf:"Australian dollar",   oecd:"AUS",  fred:"USAL", },
 	"BHD":{ imf:"Bahrain dinar",                                 },
@@ -110,9 +110,9 @@ download.all=async function()
 
 	await download.names()
 
-	await download.imf()
-	await download.fred()
-//	await download.oecd()
+//	await download.imf()
+//	await download.fred()
+	await download.oecd()
 
 	await download.usd_day()
 	await download.usd_month()
@@ -311,129 +311,65 @@ download.imf=async function()
 
 download.oecd=async function()
 {
-	// we hit api limits so, uhm, randomise the access, eventually we will probably get all the data, maybe
-	rando=[]
-	for( let n in download.currency )
-	{
-		rando.push({ n:n , v:download.currency[n] })
-	}
-	function shuffleArray(array) {
-		for (var i = array.length - 1; i > 0; i--) {
-			var j = Math.floor(Math.random() * (i + 1));
-			var temp = array[i];
-			array[i] = array[j];
-			array[j] = temp;
-		}
-	}
-	shuffleArray(rando)
-
 	let dump={}
-	for( let r of rando )
+
+	console.log("Downloading yearly OECD data")
+
+	let url="https://sdmx.oecd.org/public/rest/data/OECD.SDD.NAD,DSD_NAAG@DF_NAAG_IX,/A..EXC_A.XDC_USD."
+	let data = await fetch(url,sslhax()).then(res => res.text())
+	let tree
+	try{ tree=jml.from_xml(data) }catch(e){ console.log(data) ; console.log(e) } // ignore parse errors
+
+	if(tree)
 	{
-		let n=r.n
-		let v=r.v
-		let cid=v.oecd
-		let giveup=false
-		if(cid)
-		{
+		let date="0000-00"
+		let area="unknown"
+		let cid=""
+		jml.walk_xpath(tree,function(it,path){
 
-			console.log("Downloading Monthly OECD data for "+cid)
-
-			let url="https://stats.oecd.org/restsdmx/sdmx.ashx/GetData/MEI_FIN/CCUS."+cid+".M/all?startTime=1940-01"
-			let data
-			for(let t=1;t<128;t++)
+			if(path=="/message:GenericData/message:DataSet/generic:Series/generic:SeriesKey/generic:Value")
 			{
-				try{ data = await fetch(url,sslhax()).then(res => res.text()) }catch(e){ console.log(e) } // ignore download errors
-				if( data && data.includes("exceeded the number of requests") )
+				if( it.id=="REF_AREA" )
 				{
-					console.log(data)
-					data=null
-					giveup=true
-					break
-//					console.log("waiting and trying again...")
-//					await new Promise(res => setTimeout(res, 60000));
-				}
-				else
-				{
-					break
+					area=it.value
 				}
 			}
-			if(giveup){break}
-			
-			let tree
-			try{ tree=jml.from_xml(data) }catch(e){ console.log(data) ; console.log(e) } // ignore parse errors
-
-			if(tree)
+			else
+			if(path=="/message:GenericData/message:DataSet/generic:Series/generic:Attributes/generic:Value")
 			{
-				let date="0000-00"
-				let measure="unknown"
-				let unit="unknown"
-				let area="unknown"
-				jml.walk_xpath(tree,function(it,path){
+				if( it.id=="CURRENCY" )
+				{
+					cid=it.value
+				}
+			}
+			else
+			if(path=="/message:GenericData/message:DataSet/generic:Series/generic:Obs/generic:ObsDimension")
+			{
+				if( it.id=="TIME_PERIOD" )
+				{
+					date=it.value
+				}
+			}
+			else
+			if(path=="/message:GenericData/message:DataSet/generic:Series/generic:Obs/generic:ObsValue")
+			{
+				let value=parseDumber(it.value)
 
-/*
-					if(path=="/message:GenericData/message:DataSet/generic:Obs/generic:Attributes")
+				if( !isNaN(value) )
+				{
+					if( ( cid!="EUR" ) && ( cid!="_Z" ) ) // EUR seems broken with random pre 1999 values and _Z is null?
 					{
-						console.log(path,it)
+						if(!dump[date]){dump[date]={}} // init
+						dump[date][cid]=value
+//console.log(cid,date,value,area)
 					}
-					if(path=="/message:GenericData/message:DataSet/generic:Obs/generic:ObsKey")
-					{
-						console.log(path,it)
-					}
-					if(path=="/message:GenericData/message:DataSet/generic:Obs/generic:ObsValue")
-					{
-						console.log(path,it)
-					}
-*/
-
-					if(path=="/message:GenericData/message:DataSet/generic:Obs/generic:ObsKey/generic:Value")
-					{
-						if( it.id=="TIME_PERIOD" )
-						{
-							date=it.value
-						}
-						else
-						if( it.id=="MEASURE" )
-						{
-							measure=it.value
-						}
-						else
-						if( it.id=="UNIT_MEASURE" )
-						{
-							unit=it.value
-						}
-						else
-						if( it.id=="REF_AREA" )
-						{
-							area=it.value
-						}
-					}
-					else
-					if(path=="/message:GenericData/message:DataSet/generic:Obs/generic:ObsValue")
-					{
-						let value=parseDumber(it.value)
-
-						if( !isNaN(value) )
-						{
-//							if( ( measure == "CC" ) && ( unit == "XDC_USD" ) && ( area == "USA" ) )
-//							if( ( area == "USA" ) )
-							{
-//								if(!dump[date]){dump[date]={}} // init
-// looks like garbage
-//								dump[date][cid]=value
-console.log(cid,date,value,measure,unit,area)
-							}
-						}
-					}
-
-				})
-break
+				}
 			}
 
-		}
+		})
 	}
 
-	let filename=__dirname+"/../json/oecd.json"
+	let filename=__dirname+"/../json/oecd_year.json"
 	let old={}
 	try{ old=JSON.parse( fs.readFileSync(filename,{encoding:"utf8"}) ) }catch(e){}
 	for(let n in old){  // include old data
